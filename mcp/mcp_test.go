@@ -41,6 +41,10 @@ func Test_GenMcpGoClientCode(t *testing.T) {
 				")})")
 		g.P("}")
 	}
+	g.AddImport("encoding/hex")
+	g.AddImport("encoding/json")
+	g.AddImport("fmt")
+	g.AddImport("strconv")
 	g.InsertPackageWithImports("sdk")
 	stream.WriteGoFile("tmp/mcp.go", g.String())
 }
