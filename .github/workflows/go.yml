@@ -103,7 +103,7 @@ jobs:
           path: binaries
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             ${{ env.RELEASE_ZIP_FILE_NAME }}-${{ github.ref_name }}.zip
