@@ -104,6 +104,7 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
         with:
           files: |
             ${{ env.RELEASE_ZIP_FILE_NAME }}-${{ github.ref_name }}.zip
