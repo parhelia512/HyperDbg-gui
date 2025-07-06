@@ -1,69 +1,709 @@
 package mcp
 
 import (
-	"strings"
+	"strconv"
 	"testing"
 
 	"github.com/ddkwork/golibrary/std/stream"
 )
 
-func TestName(t *testing.T) {
-	for s := range stream.ReadFileToLines("export/export.cpp") {
-		if strings.HasPrefix(s, "    return ") {
-			s = strings.TrimSpace(s)
-			s = strings.TrimPrefix(s, "return")
-			println(s)
-		}
-	}
-
-	//b := string(mylog.Check2(os.ReadFile("export/export.cpp")))
-	//split := strings.Split(b, "hyperdbg_u_")
-	//mylog.Struct(split)
-}
-
 /* todo
  *  make api meta json file and all commands json file
  *  decode all error code text and send to client
-VmxSupportDetection();
-HyperDbgLoadVmmModule();
-HyperDbgUnloadVmm();
-HyperDbgInstallVmmDriver();
-HyperDbgUninstallVmmDriver();
-HyperDbgStopVmmDriver();
-HyperDbgInterpreter(command);
-HyperDbgTestCommandParser(command, number_of_tokens, tokens_list, failed_token_num, failed_token_position);
-HyperDbgTestCommandParserShowTokens(command);
-SetTextMessageCallbackUsingSharedBuffer(handler);
-ScriptReadFileAndExecuteCommandline(argc, argv);
-ContinuePreviousCommand();
-CheckMultilineCommand(current_command, reset);
-ConnectRemoteDebugger(ip, port);
-HyperDbgReadMemory(target_address, memory_type, reading_Type, pid, size, get_address_mode, address_mode, target_buffer_to_store, return_length);
-HyperDbgReadAllRegisters(guest_registers, extra_registers);
-HyperDbgReadTargetRegister(register_id, target_register);
-HyperDbgWriteTargetRegister(register_id, value);
-HyperDbgRegisterShowAll();
-HyperDbgRegisterShowTargetRegister(register_id);
-HyperDbgWriteMemory(destination_address, memory_type, process_id, source_address, number_of_bytes);
-DebuggerGetKernelBase();
-HyperDbgDebugRemoteDeviceUsingComPort(port_name, baudrate, pause_after_connection);
-HyperDbgDebugRemoteDeviceUsingNamedPipe(named_pipe, pause_after_connection);
-HyperDbgDebugCloseRemoteDebugger();
-HyperDbgDebugCurrentDeviceUsingComPort(port_name, baudrate);
-UdAttachToProcess(NULL,
-UdAttachToProcess(NULL,
-HyperDbgAssembleGetLength(assembly_code, start_address, length);
-HyperDbgAssemble(assembly_code, start_address, buffer_to_store_assembled_data, buffer_size);
-SetupPathForFileName(filename, file_location, buffer_len, check_file_existence);
-SteppingInstrumentationStepIn();
-SteppingRegularStepIn();
-SteppingStepOver();
-SteppingInstrumentationStepInForTracking();
-SteppingStepOverForGu(last_instruction);
-HyperDbgGetLocalApic(local_apic, is_using_x2apic);
-HyperDbgGetIoApic(io_apic);
-HyperDbgGetIdtEntry(idt_packet);
-HwdbgScriptRunScript(script,
-HyperDbgEnableTransparentMode(ProcessId, ProcessName, IsProcessId);
-HyperDbgDisableTransparentMode();
-*/
+ */
+func Test_GenMcpGoClientCode(t *testing.T) {
+	g := stream.NewGeneratedFile()
+	g.P("type debuggers struct {}")
+	for _, api := range apis {
+		//func (module) InfoFromAddr(address int) moduleInfo {
+		params := ""
+		for _, param := range api.Params {
+			params += param.Name + " " + param.Type + ", "
+		}
+		g.P("func (debuggers) ", api.Name, "("+params, ") ", api.ReturnType, " {")
+		g.P("\treturn request[",
+			api.ReturnType,
+			"](",
+			strconv.Quote(api.Name),
+			", map[string]string{",
+			"\"addr\""+
+				": fmt.Sprintf(\"0x%x\", "+
+				"address"+
+				")})")
+		g.P("}")
+	}
+	g.InsertPackageWithImports("sdk")
+	stream.WriteGoFile("tmp/mcp.go", g.String())
+}
+
+func GenMcpCppServerCode()        {}
+func GenMcpPythonClientCode()     {}
+func GenMcpCsharpClientCode()     {}
+func GenMcpJavascriptClientCode() {}
+func GenMcpRustClientCode()       {}
+
+type ApiMeta struct {
+	Name       string
+	Params     []NameType
+	ReturnType string
+}
+
+type NameType struct {
+	Name string
+	Type string
+}
+
+func TestApiMeta(t *testing.T) {
+	stream.MarshalJsonToFile(apis, "mcp_api_meta.json")
+}
+
+var apis = []ApiMeta{
+	{
+		Name:       "VmxSupportDetection",
+		Params:     nil,
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "CpuReadVendorString",
+		Params: []NameType{
+			{
+				Name: "vendor_string",
+				Type: "CHAR *",
+			},
+		},
+		ReturnType: "VOID",
+	},
+	{
+		Name:       "HyperDbgLoadVmmModule",
+		Params:     nil,
+		ReturnType: "INT", //? INT Returns 0 if it was successful and 1 if it was failed
+	},
+	{
+		Name:       "HyperDbgUnloadVmm",
+		Params:     nil,
+		ReturnType: "INT",
+	},
+	{
+		Name:       "HyperDbgInstallVmmDriver",
+		Params:     nil,
+		ReturnType: "INT",
+	},
+
+	{
+		Name:       "HyperDbgUninstallVmmDriver",
+		Params:     nil,
+		ReturnType: "INT",
+	},
+	{
+		Name:       "HyperDbgStopVmmDriver",
+		Params:     nil,
+		ReturnType: "INT",
+	},
+	{
+		Name: "HyperDbgInterpreter", // RunCommand
+		Params: []NameType{
+			{
+				Name: "command",
+				Type: "CHAR *",
+			},
+		},
+		ReturnType: "INT",
+	},
+
+	{
+		Name: "HyperDbgTestCommandParser",
+		Params: []NameType{
+			{
+				Name: "command",
+				Type: "CHAR *",
+			},
+			{
+				Name: "number_of_tokens",
+				Type: "UINT32",
+			},
+			{
+				Name: "tokens_list",
+				Type: "CHAR **", //?todo how to format this
+			},
+			{
+				Name: "failed_token_num",
+				Type: "UINT32 *",
+			},
+			{
+				Name: "failed_token_position",
+				Type: "UINT32 *",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "HyperDbgTestCommandParserShowTokens",
+		Params: []NameType{
+			{
+				Name: "command",
+				Type: "CHAR *",
+			},
+		},
+		ReturnType: "VOID",
+	},
+
+	{
+		Name:       "HyperDbgShowSignature",
+		Params:     nil,
+		ReturnType: "VOID",
+	},
+	{
+		Name:       "SetTextMessageCallback", //todo remove
+		Params:     nil,
+		ReturnType: "VOID",
+	},
+	{
+		Name:       "SetTextMessageCallbackUsingSharedBuffer", //todo remove
+		Params:     nil,
+		ReturnType: "VOID",
+	},
+	{
+		Name:       "UnsetTextMessageCallback", //todo remove
+		Params:     nil,
+		ReturnType: "VOID",
+	},
+	{
+		Name: "ScriptReadFileAndExecuteCommandline",
+		Params: []NameType{
+			{
+				Name: "argc",
+				Type: "INT",
+			},
+			{
+				Name: "argv",
+				Type: "CHAR *",
+			},
+		},
+		ReturnType: "INT",
+	},
+
+	{
+		Name:       "ContinuePreviousCommand",
+		Params:     nil,
+		ReturnType: "BOOLEAN",
+	},
+
+	{
+		Name: "CheckMultilineCommand",
+		Params: []NameType{
+			{
+				Name: "current_command",
+				Type: "CHAR *",
+			},
+			{
+				Name: "reset",
+				Type: "BOOLEAN",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	///////////////////////////////////////////////////
+	{
+		Name:       "ConnectLocalDebugger",
+		Params:     nil,
+		ReturnType: "VOID",
+	},
+	{
+		Name: "ConnectRemoteDebugger",
+		Params: []NameType{
+			{
+				Name: "ip",
+				Type: "const CHAR *",
+			},
+			{
+				Name: "port",
+				Type: "const CHAR *",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name:       "Continue", //c api CommandGRequest
+		Params:     nil,
+		ReturnType: "VOID",
+	},
+	{
+		Name:       "Pause", //c api CommandPauseRequest
+		Params:     nil,
+		ReturnType: "VOID",
+	},
+	{
+		Name: "SetBreakPoint", //c api CommandBpRequest
+		Params: []NameType{
+			{
+				Name: "address",
+				Type: "UINT64",
+			},
+			{
+				Name: "pid",
+				Type: "UINT32",
+			},
+			{
+				Name: "tid",
+				Type: "UINT32",
+			}, {
+				Name: "core_numer",
+				Type: "UINT32",
+			},
+		},
+		ReturnType: "VOID",
+	},
+	{
+		Name: "SetCustomDriverPath", //set_custom_driver_path , no c api
+		Params: []NameType{
+			{
+				Name: "driver_file_path",
+				Type: "CHAR *",
+			},
+			{
+				Name: "driver_name",
+				Type: "CHAR *",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name:       "UseDefaultDriverPath", //use_default_driver_path,NO c api
+		Params:     nil,
+		ReturnType: "VOID",
+	},
+	{
+		Name: "HyperDbgReadMemory", //todo 处理参数是指针类型的格式化操作，参数太多了
+		Params: []NameType{
+			{
+				Name: "target_address",
+				Type: "UINT64",
+			},
+			{
+				Name: "memory_type",
+				Type: "DEBUGGER_READ_MEMORY_TYPE", //todo gen enum type
+			},
+			{
+				Name: "reading_Type",
+				Type: "xxxxxxxxxx",
+			},
+			{
+				Name: "pid",
+				Type: "xxxxxxxxxx",
+			},
+			{
+				Name: "size",
+				Type: "xxxxxxxxxx",
+			},
+			{
+				Name: "get_address_mode",
+				Type: "xxxxxxxxxx",
+			},
+			{
+				Name: "address_mode",
+				Type: "xxxxxxxxxx",
+			},
+			{
+				Name: "target_buffer_to_store",
+				Type: "xxxxxxxxxx",
+			},
+			{
+				Name: "return_length",
+				Type: "xxxxxxxxxx",
+			},
+		},
+		ReturnType: "BOOLEAN", //todo 改变返回值类型 bytes buffer return need to be changed
+	},
+	{
+		Name: "HyperDbgShowMemoryOrDisassemble",
+		Params: []NameType{
+			{
+				Name: "style",
+				Type: "DEBUGGER_SHOW_MEMORY_STYLE",
+			},
+			{
+				Name: "address",
+				Type: "UINT64",
+			},
+			{
+				Name: "memory_type",
+				Type: "DEBUGGER_READ_MEMORY_TYPE",
+			},
+			{
+				Name: "reading_type",
+				Type: "DEBUGGER_READ_READING_TYPE",
+			},
+			{
+				Name: "pid",
+				Type: "UINT32",
+			},
+			{
+				Name: "size",
+				Type: "UINT32",
+			},
+			{
+				Name: "dt_details",
+				Type: "PDEBUGGER_DT_COMMAND_OPTIONS",
+			},
+		},
+		ReturnType: "VOID", //TODO
+	},
+	{
+		Name: "HyperDbgReadAllRegisters",
+		Params: []NameType{
+			{
+				Name: "guest_registers",
+				Type: "xxxxxxxxxxxxxxx",
+			},
+			{
+				Name: "extra_registers",
+				Type: "xxxxxxxxxx",
+			},
+		},
+		ReturnType: "BOOLEAN", //todo 返回结构体
+	},
+	{
+		Name: "xxxxxxxxxxxxxxxxxxx",
+		Params: []NameType{
+			{
+				Name: "xxxxxxxxxxxxxx",
+				Type: "xxxxxxxxxxxxxxx",
+			},
+			{
+				Name: "xxxxxxxxxx",
+				Type: "xxxxxxxxxx",
+			},
+		},
+		ReturnType: "xxxxxxxxxxxxxxxxx",
+	},
+	{
+		Name: "HyperDbgReadTargetRegister",
+		Params: []NameType{
+			{
+				Name: "xxxxxxxxxxxxxx",
+				Type: "xxxxxxxxxxxxxxx",
+			},
+			{
+				Name: "xxxxxxxxxx",
+				Type: "xxxxxxxxxx",
+			},
+		},
+		ReturnType: "BOOLEAN", //todo 返回结构体
+	},
+	{
+		Name: "HyperDbgWriteTargetRegister",
+		Params: []NameType{
+			{
+				Name: "register_id",
+				Type: "REGS_ENUM",
+			},
+			{
+				Name: "value",
+				Type: "UINT64",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name:       "HyperDbgRegisterShowAll", //?
+		Params:     nil,
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "HyperDbgRegisterShowTargetRegister",
+		Params: []NameType{
+			{
+				Name: "register_id",
+				Type: "REGS_ENUM",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "HyperDbgWriteMemory",
+		Params: []NameType{
+			{
+				Name: "destination_address",
+				Type: "PVOID",
+			},
+			{
+				Name: "memory_type",
+				Type: "DEBUGGER_EDIT_MEMORY_TYPE",
+			},
+			{
+				Name: "process_id",
+				Type: "UINT32",
+			},
+			{
+				Name: "source_address",
+				Type: "PVOID",
+			},
+			{
+				Name: "number_of_bytes",
+				Type: "UINT32",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name:       "DebuggerGetKernelBase",
+		Params:     nil,
+		ReturnType: "UINT64",
+	},
+	{
+		Name: "HyperDbgDebugRemoteDeviceUsingComPort",
+		Params: []NameType{
+			{
+				Name: "port_name",
+				Type: "const CHAR *",
+			},
+			{
+				Name: "baudrate",
+				Type: "DWORD",
+			},
+			{
+				Name: "pause_after_connection",
+				Type: "BOOLEAN",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "HyperDbgDebugRemoteDeviceUsingNamedPipe",
+		Params: []NameType{
+			{
+				Name: "named_pipe",
+				Type: "const CHAR *",
+			},
+			{
+				Name: "pause_after_connection",
+				Type: "BOOLEAN",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name:       "HyperDbgDebugCloseRemoteDebugger",
+		Params:     nil,
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "HyperDbgDebugCurrentDeviceUsingComPort",
+		Params: []NameType{
+			{
+				Name: "port_name",
+				Type: "const CHAR *",
+			},
+			{
+				Name: "baudrate",
+				Type: "DWORD",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "UdAttachToProcess",
+		Params: []NameType{
+			{
+				Name: "path",
+				Type: "const WCHAR *", //todo
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "UdAttachToProcess",
+		Params: []NameType{
+			{
+				Name: "path",
+				Type: "const WCHAR *",
+			},
+			{
+				Name: "arguments",
+				Type: "const WCHAR *",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "HyperDbgAssembleGetLength",
+		Params: []NameType{
+			{
+				Name: "assembly_code",
+				Type: "const CHAR *",
+			},
+			{
+				Name: "start_address",
+				Type: "UINT64",
+			},
+			{
+				Name: "length",
+				Type: "UINT32 *", //todo move to return
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "HyperDbgAssemble",
+		Params: []NameType{
+			{
+				Name: "assembly_code",
+				Type: "const CHAR *",
+			},
+			{
+				Name: "start_address",
+				Type: "UINT64",
+			},
+			{
+				Name: "buffer_to_store_assembled_data",
+				Type: "PVOID",
+			},
+			{
+				Name: "buffer_size", //?
+				Type: "UINT32",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "SetupPathForFileName",
+		Params: []NameType{
+			{
+				Name: "filename",
+				Type: "const CHAR *",
+			},
+			{
+				Name: "file_location",
+				Type: "CHAR *",
+			},
+			{
+				Name: "buffer_len",
+				Type: "UINT32",
+			},
+			{
+				Name: "check_file_existence",
+				Type: "BOOLEAN",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name:       "SteppingInstrumentationStepIn", //todo rename
+		Params:     nil,
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name:       "SteppingRegularStepIn",
+		Params:     nil,
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name:       "SteppingStepOver",
+		Params:     nil,
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name:       "SteppingInstrumentationStepInForTracking",
+		Params:     nil,
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "SteppingStepOverForGu",
+		Params: []NameType{
+			{
+				Name: "last_instruction",
+				Type: "BOOLEAN",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "HyperDbgGetLocalApic",
+		Params: []NameType{
+			{
+				Name: "local_apic",
+				Type: "PLAPIC_PAGE",
+			},
+			{
+				Name: "is_using_x2apic",
+				Type: "BOOLEAN *", //?
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "HyperDbgGetIoApic",
+		Params: []NameType{
+			{
+				Name: "io_apic",
+				Type: "IO_APIC_ENTRY_PACKETS *", //?
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "HyperDbgGetIdtEntry",
+		Params: []NameType{
+			{
+				Name: "idt_packet",
+				Type: "INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS *", //todo move into return
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "HwdbgScriptRunScript",
+		Params: []NameType{
+			{
+				Name: "script",
+				Type: "const CHAR * ",
+			},
+			{
+				Name: "instance_filepath_to_read",
+				Type: "const CHAR * ",
+			},
+			{
+				Name: "hardware_script_file_path_to_save",
+				Type: "const CHAR * ",
+			},
+			{
+				Name: "initial_bram_buffer_size",
+				Type: "UINT32",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name: "ScriptEngineWrapperTestParserForHwdbg",
+		Params: []NameType{
+			{
+				Name: "Expr",
+				Type: "const char *",
+			},
+		},
+		ReturnType: "VOID",
+	},
+	{
+		Name: "HyperDbgEnableTransparentMode",
+		Params: []NameType{
+			{
+				Name: "ProcessId",
+				Type: "UINT32",
+			},
+			{
+				Name: "ProcessName",
+				Type: "CHAR *",
+			},
+			{
+				Name: "IsProcessId",
+				Type: "BOOLEAN",
+			},
+		},
+		ReturnType: "BOOLEAN",
+	},
+	{
+		Name:       "HyperDbgDisableTransparentMode",
+		Params:     nil,
+		ReturnType: "BOOLEAN",
+	},
+}

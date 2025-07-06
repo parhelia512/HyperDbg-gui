@@ -786,3 +786,4 @@ hyperdbg_u_disable_transparent_mode()
 {
     return HyperDbgDisableTransparentMode();
 }
+
