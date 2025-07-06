@@ -2,6 +2,7 @@ package mcp
 
 import (
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/ddkwork/golibrary/std/stream"
@@ -24,7 +25,7 @@ func Test_GenMcpGoClientCode(t *testing.T) {
 	g := stream.NewGeneratedFile()
 	g.P("type debuggers struct {}")
 	for _, api := range apis {
-		//func (module) InfoFromAddr(address int) moduleInfo {
+		api.Name = strings.TrimPrefix(api.Name, "HyperDbg")
 		params := ""
 		for _, param := range api.Params {
 			params += param.Name + " " + goType[param.Type] + ", "
