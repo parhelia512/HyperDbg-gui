@@ -29,8 +29,16 @@ func Test_GenMcpGoClientCode(t *testing.T) {
 		for _, param := range api.Params {
 			params += param.Name + " " + goType[param.Type] + ", "
 		}
-		g.P("func (debuggers) ", api.Name, "("+params, ") ", goType[api.ReturnType], " {")
-		g.P("\treturn request[",
+		returnType := goType[api.ReturnType]
+		returnSyntax := "return"
+		if api.ReturnType == "VOID" {
+			returnType = ""
+			returnSyntax = ""
+		}
+		g.P("func (debuggers) ", api.Name, "("+params, ") ", returnType, " {")
+		g.P("\t"+
+			returnSyntax+
+			" request[",
 			goType[api.ReturnType],
 			"](",
 			strconv.Quote(api.Name),
