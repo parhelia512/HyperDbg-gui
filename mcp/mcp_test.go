@@ -12,17 +12,26 @@ import (
  *  decode all error code text and send to client
  */
 func Test_GenMcpGoClientCode(t *testing.T) {
+	goType := map[string]string{
+		"BOOLEAN":      "bool",
+		"INT":          "int",
+		"UINT32":       "uint32",
+		"UINT64":       "uint64",
+		"const CHAR *": "string",
+		"CHAR *":       "string",
+		"VOID":         "void",
+	}
 	g := stream.NewGeneratedFile()
 	g.P("type debuggers struct {}")
 	for _, api := range apis {
 		//func (module) InfoFromAddr(address int) moduleInfo {
 		params := ""
 		for _, param := range api.Params {
-			params += param.Name + " " + param.Type + ", "
+			params += param.Name + " " + goType[param.Type] + ", "
 		}
-		g.P("func (debuggers) ", api.Name, "("+params, ") ", api.ReturnType, " {")
+		g.P("func (debuggers) ", api.Name, "("+params, ") ", goType[api.ReturnType], " {")
 		g.P("\treturn request[",
-			api.ReturnType,
+			goType[api.ReturnType],
 			"](",
 			strconv.Quote(api.Name),
 			", map[string]string{",
