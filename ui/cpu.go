@@ -229,7 +229,7 @@ type (
 	ImmData struct {
 		Reg     string // todo use kind of  Register enum
 		Address uint64
-		Mem     []byte
+		Mem     string
 	}
 	FastCall struct {
 		// Index    int
@@ -250,7 +250,7 @@ func (m *Imm) Layout(gtx layout.Context) layout.Dimensions {
 			rows = append(rows, ImmData{
 				Reg:     "RAX",
 				Address: 0x1234567890,
-				Mem:     []byte{0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0x0},
+				Mem:     hex.EncodeToString([]byte{0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0x0}),
 			})
 		}
 		m.rows = rows
@@ -270,10 +270,10 @@ func (m *Imm) Layout(gtx layout.Context) layout.Dimensions {
 						return material.H6(ux.NewTheme(), "Reg:"+m.rows[i].Reg).Layout(gtx)
 					}),
 					layout.Rigid(func(gtx layout.Context) layout.Dimensions {
-						return material.H6(ux.NewTheme(), "Address:"+strconv.FormatUint(m.rows[i].Address, 16)).Layout(gtx)
+						return material.H6(ux.NewTheme(), "  Address:"+strconv.FormatUint(m.rows[i].Address, 16)).Layout(gtx)
 					}),
 					layout.Rigid(func(gtx layout.Context) layout.Dimensions {
-						return material.H6(ux.NewTheme(), "Mem:"+string(m.rows[i].Mem)).Layout(gtx)
+						return material.H6(ux.NewTheme(), "  Mem:"+string(m.rows[i].Mem)).Layout(gtx)
 					}),
 				)
 			}))
