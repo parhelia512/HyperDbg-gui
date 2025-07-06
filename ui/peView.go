@@ -27,6 +27,9 @@ func NewPeView() ux.Widget {
 			}
 		},
 		MarshalRowCells: func(n *ux.Node[PeView]) (cells []ux.CellData) {
+			if n.Container() {
+				n.Data.Name = n.SumChildren()
+			}
 			return ux.MarshalRow(n.Data, func(key string, field any) (value string) {
 				return ""
 			})
