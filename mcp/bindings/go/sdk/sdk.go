@@ -2,6 +2,7 @@ package sdk
 
 import (
 	"encoding/hex"
+	"github.com/ddkwork/golibrary/std/stream"
 	"strconv"
 	"strings"
 )
@@ -106,42 +107,42 @@ func (debugger) UseDefaultDriverPath() {
 func (debugger) ReadMemory(target_address uint64, memory_type DEBUGGER_READ_MEMORY_TYPE, reading_Type DEBUGGER_READ_READING_TYPE, pid uint32, size uint32, get_address_mode bool, address_mode DEBUGGER_READ_MEMORY_ADDRESS_MODE, target_buffer_to_store []byte, return_length uint32) bool {
 	return request[bool]("ReadMemory", map[string]string{
 		"target_address":         strconv.FormatUint(target_address, 10),
-		"memory_type":            "panic todo hanlde me",
-		"reading_Type":           "panic todo hanlde me",
+		"memory_type":            strconv.FormatUint(uint64(memory_type), 10),
+		"reading_Type":           strconv.FormatUint(uint64(reading_Type), 10),
 		"pid":                    strconv.FormatUint(uint64(pid), 10),
 		"size":                   strconv.FormatUint(uint64(size), 10),
 		"get_address_mode":       strconv.FormatBool(get_address_mode),
-		"address_mode":           "panic todo hanlde me",
+		"address_mode":           strconv.FormatUint(uint64(address_mode), 10),
 		"target_buffer_to_store": hex.EncodeToString(target_buffer_to_store),
 		"return_length":          strconv.FormatUint(uint64(return_length), 10),
 	})
 }
-func (debugger) ShowMemoryOrDisassemble(style DEBUGGER_SHOW_MEMORY_STYLE, address uint64, memory_type DEBUGGER_READ_MEMORY_TYPE, reading_type DEBUGGER_READ_READING_TYPE, pid uint32, size uint32, dt_details PDEBUGGER_DT_COMMAND_OPTIONS) {
+func (debugger) ShowMemoryOrDisassemble(style DEBUGGER_SHOW_MEMORY_STYLE, address uint64, memory_type DEBUGGER_READ_MEMORY_TYPE, reading_type DEBUGGER_READ_READING_TYPE, pid uint32, size uint32, dt_details DEBUGGER_DT_COMMAND_OPTIONS) {
 	request[void]("ShowMemoryOrDisassemble", map[string]string{
-		"style":        "panic todo hanlde me",
+		"style":        strconv.FormatUint(uint64(style), 10),
 		"address":      strconv.FormatUint(address, 10),
-		"memory_type":  "panic todo hanlde me",
-		"reading_type": "panic todo hanlde me",
+		"memory_type":  strconv.FormatUint(uint64(memory_type), 10),
+		"reading_type": strconv.FormatUint(uint64(reading_type), 10),
 		"pid":          strconv.FormatUint(uint64(pid), 10),
 		"size":         strconv.FormatUint(uint64(size), 10),
-		"dt_details":   "panic todo hanlde me",
+		"dt_details":   string(stream.MarshalJSON(dt_details)),
 	})
 }
 func (debugger) ReadAllRegisters(guest_registers GUEST_REGS, extra_registers GUEST_EXTRA_REGISTERS) bool {
 	return request[bool]("ReadAllRegisters", map[string]string{
-		"guest_registers": "panic todo hanlde me",
-		"extra_registers": "panic todo hanlde me",
+		"guest_registers": string(stream.MarshalJSON(guest_registers)),
+		"extra_registers": string(stream.MarshalJSON(extra_registers)),
 	})
 }
-func (debugger) ReadTargetRegister(REGS_ENUM, target_register uint64) bool {
+func (debugger) ReadTargetRegister(register_id REGS_ENUM, target_register uint64) bool {
 	return request[bool]("ReadTargetRegister", map[string]string{
-		"REGS_ENUM":       "panic todo hanlde me",
-		"target_register": "panic todo hanlde me",
+		"register_id":     strconv.FormatUint(uint64(register_id), 10),
+		"target_register": strconv.FormatUint(uint64(target_register), 10),
 	})
 }
 func (debugger) WriteTargetRegister(register_id REGS_ENUM, value uint64) bool {
 	return request[bool]("WriteTargetRegister", map[string]string{
-		"register_id": "panic todo hanlde me",
+		"register_id": strconv.FormatUint(uint64(register_id), 10),
 		"value":       strconv.FormatUint(value, 10),
 	})
 }
@@ -149,14 +150,14 @@ func (debugger) RegisterShowAll() bool {
 	return request[bool]("RegisterShowAll", nil)
 }
 func (debugger) RegisterShowTargetRegister(register_id REGS_ENUM) bool {
-	return request[bool]("RegisterShowTargetRegister", map[string]string{"register_id": "panic todo hanlde me"})
+	return request[bool]("RegisterShowTargetRegister", map[string]string{"register_id": strconv.FormatUint(uint64(register_id), 10)})
 }
 func (debugger) WriteMemory(destination_address any, memory_type DEBUGGER_EDIT_MEMORY_TYPE, process_id uint32, source_address any, number_of_bytes uint32) bool {
 	return request[bool]("WriteMemory", map[string]string{
-		"destination_address": "panic todo hanlde me",
-		"memory_type":         "panic todo hanlde me",
+		"destination_address": strconv.FormatUint(uint64(destination_address), 10),
+		"memory_type":         strconv.FormatUint(uint64(memory_type), 10),
 		"process_id":          strconv.FormatUint(uint64(process_id), 10),
-		"source_address":      "panic todo hanlde me",
+		"source_address":      strconv.FormatUint(uint64(source_address), 10),
 		"number_of_bytes":     strconv.FormatUint(uint64(number_of_bytes), 10),
 	})
 }
@@ -205,7 +206,7 @@ func (debugger) Assemble(assembly_code string, start_address uint64, buffer_to_s
 	return request[bool]("Assemble", map[string]string{
 		"assembly_code":                  assembly_code,
 		"start_address":                  strconv.FormatUint(start_address, 10),
-		"buffer_to_store_assembled_data": "panic todo hanlde me",
+		"buffer_to_store_assembled_data": strconv.FormatUint(uint64(buffer_to_store_assembled_data), 10),
 		"buffer_size":                    strconv.FormatUint(uint64(buffer_size), 10),
 	})
 }
@@ -234,15 +235,15 @@ func (debugger) SteppingStepOverForGu(last_instruction bool) bool {
 }
 func (debugger) GetLocalApic(local_apic PLAPIC_PAGE, is_using_x2apic bool) bool {
 	return request[bool]("GetLocalApic", map[string]string{
-		"local_apic":      "panic todo hanlde me",
-		"is_using_x2apic": "panic todo hanlde me",
+		"local_apic":      string(stream.MarshalJSON(local_apic)),
+		"is_using_x2apic": strconv.FormatBool(is_using_x2apic),
 	})
 }
 func (debugger) GetIoApic(io_apic IO_APIC_ENTRY_PACKETS) bool {
-	return request[bool]("GetIoApic", map[string]string{"io_apic": "panic todo hanlde me"})
+	return request[bool]("GetIoApic", map[string]string{"io_apic": string(stream.MarshalJSON(io_apic))})
 }
 func (debugger) GetIdtEntry(idt_packet INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS) bool {
-	return request[bool]("GetIdtEntry", map[string]string{"idt_packet": "panic todo hanlde me"})
+	return request[bool]("GetIdtEntry", map[string]string{"idt_packet": string(stream.MarshalJSON(idt_packet))})
 }
 func (debugger) HwdbgScriptRunScript(script string, instance_filepath_to_read string, hardware_script_file_path_to_save string, initial_bram_buffer_size uint32) bool {
 	return request[bool]("HwdbgScriptRunScript", map[string]string{

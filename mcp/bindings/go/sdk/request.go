@@ -193,7 +193,6 @@ func request[T Type](endpoint string, params map[string]string) T {
 }
 
 type (
-	PDEBUGGER_DT_COMMAND_OPTIONS      struct{}
 	DEBUGGER_READ_MEMORY_ADDRESS_MODE byte
 	DEBUGGER_READ_MEMORY_TYPE         byte
 	DEBUGGER_EDIT_MEMORY_TYPE         byte

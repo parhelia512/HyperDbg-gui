@@ -302,8 +302,8 @@
   "Name": "HyperDbgReadTargetRegister",
   "Params": [
    {
-    "Name": "REGS_ENUM",
-    "Type": "register_id"
+    "Name": "register_id",
+    "Type": "REGS_ENUM"
    },
    {
     "Name": "target_register",

@@ -34,7 +34,7 @@ func Test_Bind_Go(t *testing.T) {
 		"VOID":                                "void",
 		"BYTE *":                              "[]byte", //todo test cpp server how to handle byte *
 		"DWORD":                               "uint32", //?
-		"PDEBUGGER_DT_COMMAND_OPTIONS":        "PDEBUGGER_DT_COMMAND_OPTIONS",
+		"PDEBUGGER_DT_COMMAND_OPTIONS":        "DEBUGGER_DT_COMMAND_OPTIONS",
 		"DEBUGGER_READ_MEMORY_ADDRESS_MODE *": "DEBUGGER_READ_MEMORY_ADDRESS_MODE",
 		"GUEST_REGS *":                        "GUEST_REGS",
 		"GUEST_EXTRA_REGISTERS *":             "GUEST_EXTRA_REGISTERS",
@@ -72,7 +72,7 @@ func Test_Bind_Go(t *testing.T) {
 		for i, param := range api.Params {
 			callParams += "\t\t" + strconv.Quote(param.Name) + ":"
 			switch param.Type {
-			case "BOOLEAN":
+			case "BOOLEAN", "BOOLEAN *":
 				callParams += "strconv.FormatBool(" + param.Name + ")"
 			case "INT":
 				callParams += "strconv.Itoa(" + param.Name + ")"
@@ -94,64 +94,34 @@ func Test_Bind_Go(t *testing.T) {
 				callParams += "hex.EncodeToString(" + param.Name + ")"
 			case "VOID":
 				callParams += "None"
-			case "PDEBUGGER_DT_COMMAND_OPTIONS":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "DEBUGGER_READ_MEMORY_ADDRESS_MODE *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "GUEST_REGS *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "GUEST_EXTRA_REGISTERS *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "IO_APIC_ENTRY_PACKETS *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "DEBUGGER_READ_MEMORY_TYPE":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "PVOID":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "REGS_ENUM":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "DEBUGGER_EDIT_MEMORY_TYPE":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "DEBUGGER_READ_READING_TYPE":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "DEBUGGER_SHOW_MEMORY_STYLE":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "PLAPIC_PAGE":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "register_id": //todo see cpp server how to handle register_id
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "UINT64 *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "PDEBUGGER_DT_COMMAND_OPTIONS *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "DEBUGGER_READ_MEMORY_ADDRESS_MODE":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "GUEST_REGS":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "GUEST_EXTRA_REGISTERS":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "IO_APIC_ENTRY_PACKETS":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "DEBUGGER_READ_MEMORY_TYPE *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "REGS_ENUM *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "DEBUGGER_EDIT_MEMORY_TYPE *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "DEBUGGER_READ_READING_TYPE *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "DEBUGGER_SHOW_MEMORY_STYLE *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "PLAPIC_PAGE *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "register_id *":
-				callParams += strconv.Quote("panic todo hanlde me")
-			case "BOOLEAN *":
-				callParams += strconv.Quote("panic todo hanlde me")
+			case "PDEBUGGER_DT_COMMAND_OPTIONS",
+				"PDEBUGGER_DT_COMMAND_OPTIONS *",
+				"GUEST_REGS *",
+				"IO_APIC_ENTRY_PACKETS *",
+				"GUEST_EXTRA_REGISTERS *",
+				"INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS *",
+				"PLAPIC_PAGE *",
+				"IO_APIC_ENTRY_PACKETS",
+				"INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS",
+				"GUEST_REGS",
+				"PLAPIC_PAGE",
+				"GUEST_EXTRA_REGISTERS":
+				callParams += "string(stream.MarshalJSON(" + param.Name + "))"
+			case "DEBUGGER_EDIT_MEMORY_TYPE",
+				"DEBUGGER_READ_READING_TYPE",
+				"DEBUGGER_SHOW_MEMORY_STYLE",
+				"DEBUGGER_READ_MEMORY_TYPE",
+				"DEBUGGER_READ_MEMORY_ADDRESS_MODE",
+				"DEBUGGER_READ_MEMORY_ADDRESS_MODE *",
+				"REGS_ENUM",
+				"REGS_ENUM *",
+				"DEBUGGER_EDIT_MEMORY_TYPE *",
+				"DEBUGGER_READ_READING_TYPE *",
+				"DEBUGGER_SHOW_MEMORY_STYLE *",
+				"DEBUGGER_READ_MEMORY_TYPE *",
+				"UINT64 *",
+				"PVOID":
+				callParams += "strconv.FormatUint(uint64(" + param.Name + "),10)"
 
 			default:
 				callParams += strconv.Quote("todo panic --> unknown param type:" + param.Type)
@@ -180,6 +150,7 @@ func Test_Bind_Go(t *testing.T) {
 	g.AddImport("strings")
 	g.AddImport("encoding/hex")
 	//g.AddImport("encoding/json")
+	g.AddImport("github.com/ddkwork/golibrary/std/stream")
 	//g.AddImport("fmt")
 	g.AddImport("strconv")
 	g.InsertPackageWithImports("sdk")
@@ -627,8 +598,8 @@ var apis = []ApiMeta{
 		Name: "HyperDbgReadTargetRegister",
 		Params: []NameType{
 			{
-				Name: "REGS_ENUM",
-				Type: "register_id",
+				Name: "register_id",
+				Type: "REGS_ENUM",
 			},
 			{
 				Name: "target_register",
