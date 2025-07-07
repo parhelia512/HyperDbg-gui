@@ -1,9 +1,9 @@
 package sdk
 import (
-"encoding/hex"
-"encoding/json"
 "fmt"
 "strconv"
+"encoding/hex"
+"encoding/json"
 )
 type debuggers struct {}
 func (debuggers) VmxSupportDetection() bool {
@@ -120,10 +120,10 @@ func (debuggers) DebugCloseRemoteDebugger() bool {
 func (debuggers) DebugCurrentDeviceUsingComPort(port_name string, baudrate , ) bool {
 	return request[bool]("DebugCurrentDeviceUsingComPort", map[string]string{"addr": fmt.Sprintf("0x%x", address)})
 }
-func (debuggers) UdAttachToProcess(path , ) bool {
+func (debuggers) UdAttachToProcess(path string, ) bool {
 	return request[bool]("UdAttachToProcess", map[string]string{"addr": fmt.Sprintf("0x%x", address)})
 }
-func (debuggers) UdAttachToProcess(path , arguments , ) bool {
+func (debuggers) UdAttachToProcess(path string, arguments string, ) bool {
 	return request[bool]("UdAttachToProcess", map[string]string{"addr": fmt.Sprintf("0x%x", address)})
 }
 func (debuggers) AssembleGetLength(assembly_code string, start_address uint64, length , ) bool {

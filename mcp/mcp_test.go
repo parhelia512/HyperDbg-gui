@@ -28,13 +28,14 @@ import (
 func Test_GenMcpGoClientCode(t *testing.T) {
 	stream.MarshalJsonToFile(apis, "mcp_api_meta.json")
 	goType := map[string]string{
-		"BOOLEAN":      "bool",
-		"INT":          "int",
-		"UINT32":       "uint32",
-		"UINT64":       "uint64",
-		"const CHAR *": "string",
-		"CHAR *":       "string",
-		"VOID":         "void",
+		"BOOLEAN":       "bool",
+		"INT":           "int",
+		"UINT32":        "uint32",
+		"UINT64":        "uint64",
+		"const CHAR *":  "string",
+		"const WCHAR *": "string", //todo utf16 ?
+		"CHAR *":        "string",
+		"VOID":          "void",
 	}
 	g := stream.NewGeneratedFile()
 	g.P("type debuggers struct {}")
