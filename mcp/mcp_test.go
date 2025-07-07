@@ -179,8 +179,8 @@ func Test_Bind_Go(t *testing.T) {
 	}
 	g.AddImport("strings")
 	g.AddImport("encoding/hex")
-	g.AddImport("encoding/json")
-	g.AddImport("fmt")
+	//g.AddImport("encoding/json")
+	//g.AddImport("fmt")
 	g.AddImport("strconv")
 	g.InsertPackageWithImports("sdk")
 	b := stream.NewBuffer("request.go").ReplaceAll("package mcp", "package sdk")

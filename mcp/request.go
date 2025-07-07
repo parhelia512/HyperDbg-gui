@@ -193,10 +193,16 @@ func request[T Type](endpoint string, params map[string]string) T {
 }
 
 type (
-	PDEBUGGER_DT_COMMAND_OPTIONS      struct{}
-	GUEST_REGS                        struct{}
-	GUEST_EXTRA_REGISTERS             struct{}
-	DEBUGGER_READ_MEMORY_ADDRESS_MODE byte
-	DEBUGGER_READ_MEMORY_TYPE         byte
-	DEBUGGER_READ_READING_TYPE        byte
+	PDEBUGGER_DT_COMMAND_OPTIONS               struct{}
+	GUEST_REGS                                 struct{}
+	GUEST_EXTRA_REGISTERS                      struct{}
+	PLAPIC_PAGE                                struct{}
+	IO_APIC_ENTRY_PACKETS                      struct{}
+	INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS struct{}
+	DEBUGGER_READ_MEMORY_ADDRESS_MODE          byte
+	DEBUGGER_READ_MEMORY_TYPE                  byte
+	DEBUGGER_EDIT_MEMORY_TYPE                  byte
+	DEBUGGER_READ_READING_TYPE                 byte
+	REGS_ENUM                                  byte
+	DEBUGGER_SHOW_MEMORY_STYLE                 byte
 )

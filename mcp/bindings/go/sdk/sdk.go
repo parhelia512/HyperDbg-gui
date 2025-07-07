@@ -2,8 +2,6 @@ package sdk
 
 import (
 	"encoding/hex"
-	"encoding/json"
-	"fmt"
 	"strconv"
 	"strings"
 )
