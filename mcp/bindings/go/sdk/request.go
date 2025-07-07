@@ -30,9 +30,9 @@ var client = &http.Client{
 //	}
 type Type interface {
 	cmp.Ordered |
-	bool |
-	[]byte |
-	void
+		bool |
+		[]byte |
+		void
 	//moduleInfo |
 	//[]moduleInfo |
 	//moduleSectionInfo |

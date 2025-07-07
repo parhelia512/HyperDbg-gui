@@ -1,6 +1,7 @@
 package mcp
 
 import (
+	"path/filepath"
 	"strconv"
 	"strings"
 	"testing"
@@ -12,6 +13,18 @@ import (
  *  make api meta json file and all commands json file
  *  decode all error code text and send to client
  */
+//bindings\csharp
+//bindings\go
+//bindings\haskell
+//bindings\java
+//bindings\masm
+//bindings\nodejs
+//bindings\ocaml
+//bindings\powershell
+//bindings\python
+//bindings\ruby
+//bindings\rust
+//bindings\vb6
 func Test_GenMcpGoClientCode(t *testing.T) {
 	goType := map[string]string{
 		"BOOLEAN":      "bool",
@@ -55,7 +68,10 @@ func Test_GenMcpGoClientCode(t *testing.T) {
 	g.AddImport("fmt")
 	g.AddImport("strconv")
 	g.InsertPackageWithImports("sdk")
-	stream.WriteGoFile("tmp/mcp.go", g.String())
+	b := stream.NewBuffer("request.go").ReplaceAll("package mcp", "package sdk")
+	stream.WriteGoFile("bindings/go/sdk/request.go", b.String())
+	stream.WriteGoFile("tmp/bindings/go/sdk/request.go", b.String())
+	stream.WriteGoFile(filepath.Join("bindings/go/sdk/mcp.go"), g.String())
 }
 
 func GenMcpCppServerCode()        {}
