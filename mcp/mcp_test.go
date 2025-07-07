@@ -14,7 +14,7 @@ import (
  *  make all commands json file
  *  decode all error code text and send to client
  */
-func Test_GenMcpGoClientCode(t *testing.T) {
+func Test_Bind_Go(t *testing.T) {
 	os.RemoveAll("bindings")
 	os.RemoveAll("tmp")
 	stream.MarshalJsonToFile(apis, "mcp_api_meta.json")
@@ -67,22 +67,23 @@ func Test_GenMcpGoClientCode(t *testing.T) {
 	stream.WriteGoFile(filepath.Join("bindings/go/sdk/sdk.go"), g.String())
 
 	//generate other language bindings
-	Test_GenMcpPythonClientCode(t)
-	Test_GenMcpCppServerCode(t)
-	Test_GenMcpCsharpClientCode(t)
-	Test_GenMcpJavascriptClientCode(t)
-	Test_GenMcpRustClientCode(t)
-	Test_GenMcpJavaClientCode(t)
-	Test_GenMcpHaskellClientCode(t)
-	Test_GenMcpMasmClientCode(t)
-	Test_GenMcpNodejsClientCode(t)
-	Test_GenMcpOcamlClientCode(t)
-	Test_GenMcpPowerShellClientCode(t)
-	Test_GenMcpRubyClientCode(t)
-	Test_GenMcpVb6ClientCode(t)
+	Test_Bind_V(t)
+	Test_Bind_Python(t)
+	Test_Gen_Cpp_Server_Code(t)
+	Test_Bind_Csharp(t)
+	Test_Bind_Javascript(t)
+	Test_Bind_Rust(t)
+	Test_Bind_Java(t)
+	Test_Bind_Haskell(t)
+	Test_Bind_Masm(t)
+	Test_Bind_Nodejs(t)
+	Test_Bind_Ocaml(t)
+	Test_Bind_PowerShell(t)
+	Test_Bind_Ruby(t)
+	Test_Bind_Vb6(t)
 }
-
-func Test_GenMcpPythonClientCode(t *testing.T) {
+func Test_Bind_V(t *testing.T) {}
+func Test_Bind_Python(t *testing.T) {
 	start := `
 import sys
 import requests
@@ -157,18 +158,18 @@ def safe_post(endpoint: str, data: dict | str):
 	stream.WriteTruncate("bindings/python/sdk.py", g.String())
 }
 
-func Test_GenMcpCppServerCode(t *testing.T)        {}
-func Test_GenMcpCsharpClientCode(t *testing.T)     {}
-func Test_GenMcpJavascriptClientCode(t *testing.T) {}
-func Test_GenMcpRustClientCode(t *testing.T)       {}
-func Test_GenMcpJavaClientCode(t *testing.T)       {}
-func Test_GenMcpHaskellClientCode(t *testing.T)    {}
-func Test_GenMcpMasmClientCode(t *testing.T)       {}
-func Test_GenMcpNodejsClientCode(t *testing.T)     {}
-func Test_GenMcpOcamlClientCode(t *testing.T)      {}
-func Test_GenMcpPowerShellClientCode(t *testing.T) {}
-func Test_GenMcpRubyClientCode(t *testing.T)       {}
-func Test_GenMcpVb6ClientCode(t *testing.T)        {}
+func Test_Gen_Cpp_Server_Code(t *testing.T) {}
+func Test_Bind_Csharp(t *testing.T)         {}
+func Test_Bind_Javascript(t *testing.T)     {}
+func Test_Bind_Rust(t *testing.T)           {}
+func Test_Bind_Java(t *testing.T)           {}
+func Test_Bind_Haskell(t *testing.T)        {}
+func Test_Bind_Masm(t *testing.T)           {}
+func Test_Bind_Nodejs(t *testing.T)         {}
+func Test_Bind_Ocaml(t *testing.T)          {}
+func Test_Bind_PowerShell(t *testing.T)     {}
+func Test_Bind_Ruby(t *testing.T)           {}
+func Test_Bind_Vb6(t *testing.T)            {}
 
 type ApiMeta struct {
 	Name       string
