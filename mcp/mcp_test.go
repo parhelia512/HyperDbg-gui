@@ -41,7 +41,7 @@ func Test_Bind_Go(t *testing.T) {
 		"INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS *": "INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS",
 		"IO_APIC_ENTRY_PACKETS *":                      "IO_APIC_ENTRY_PACKETS",
 		"DEBUGGER_READ_MEMORY_TYPE":                    "DEBUGGER_READ_MEMORY_TYPE",
-		"PVOID":                                        "any",
+		"PVOID":                                        "uint64",
 		"REGS_ENUM":                                    "REGS_ENUM",
 		"DEBUGGER_EDIT_MEMORY_TYPE":                    "DEBUGGER_EDIT_MEMORY_TYPE",
 		"DEBUGGER_READ_READING_TYPE":                   "DEBUGGER_READ_READING_TYPE",

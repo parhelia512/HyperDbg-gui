@@ -2,9 +2,10 @@ package sdk
 
 import (
 	"encoding/hex"
-	"github.com/ddkwork/golibrary/std/stream"
 	"strconv"
 	"strings"
+
+	"github.com/ddkwork/golibrary/std/stream"
 )
 
 type debugger struct{}
@@ -152,7 +153,7 @@ func (debugger) RegisterShowAll() bool {
 func (debugger) RegisterShowTargetRegister(register_id REGS_ENUM) bool {
 	return request[bool]("RegisterShowTargetRegister", map[string]string{"register_id": strconv.FormatUint(uint64(register_id), 10)})
 }
-func (debugger) WriteMemory(destination_address any, memory_type DEBUGGER_EDIT_MEMORY_TYPE, process_id uint32, source_address any, number_of_bytes uint32) bool {
+func (debugger) WriteMemory(destination_address uint64, memory_type DEBUGGER_EDIT_MEMORY_TYPE, process_id uint32, source_address uint64, number_of_bytes uint32) bool {
 	return request[bool]("WriteMemory", map[string]string{
 		"destination_address": strconv.FormatUint(uint64(destination_address), 10),
 		"memory_type":         strconv.FormatUint(uint64(memory_type), 10),
@@ -202,7 +203,7 @@ func (debugger) AssembleGetLength(assembly_code string, start_address uint64, le
 		"length":        strconv.FormatUint(uint64(length), 10),
 	})
 }
-func (debugger) Assemble(assembly_code string, start_address uint64, buffer_to_store_assembled_data any, buffer_size uint32) bool {
+func (debugger) Assemble(assembly_code string, start_address uint64, buffer_to_store_assembled_data uint64, buffer_size uint32) bool {
 	return request[bool]("Assemble", map[string]string{
 		"assembly_code":                  assembly_code,
 		"start_address":                  strconv.FormatUint(start_address, 10),
