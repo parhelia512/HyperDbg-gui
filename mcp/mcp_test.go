@@ -11,21 +11,9 @@ import (
 )
 
 /* todo
- *  make api meta json file and all commands json file
+ *  make all commands json file
  *  decode all error code text and send to client
  */
-//bindings\csharp
-//bindings\go
-//bindings\haskell
-//bindings\java
-//bindings\masm
-//bindings\nodejs
-//bindings\ocaml
-//bindings\powershell
-//bindings\python
-//bindings\ruby
-//bindings\rust
-//bindings\vb6
 func Test_GenMcpGoClientCode(t *testing.T) {
 	os.RemoveAll("bindings")
 	os.RemoveAll("tmp")
@@ -77,7 +65,21 @@ func Test_GenMcpGoClientCode(t *testing.T) {
 	stream.WriteGoFile("bindings/go/sdk/request.go", b.String())
 	stream.WriteGoFile("tmp/bindings/go/sdk/request.go", b.String())
 	stream.WriteGoFile(filepath.Join("bindings/go/sdk/sdk.go"), g.String())
+
+	//generate other language bindings
 	Test_GenMcpPythonClientCode(t)
+	Test_GenMcpCppServerCode(t)
+	Test_GenMcpCsharpClientCode(t)
+	Test_GenMcpJavascriptClientCode(t)
+	Test_GenMcpRustClientCode(t)
+	Test_GenMcpJavaClientCode(t)
+	Test_GenMcpHaskellClientCode(t)
+	Test_GenMcpMasmClientCode(t)
+	Test_GenMcpNodejsClientCode(t)
+	Test_GenMcpOcamlClientCode(t)
+	Test_GenMcpPowerShellClientCode(t)
+	Test_GenMcpRubyClientCode(t)
+	Test_GenMcpVb6ClientCode(t)
 }
 
 func Test_GenMcpPythonClientCode(t *testing.T) {
@@ -159,6 +161,14 @@ func Test_GenMcpCppServerCode(t *testing.T)        {}
 func Test_GenMcpCsharpClientCode(t *testing.T)     {}
 func Test_GenMcpJavascriptClientCode(t *testing.T) {}
 func Test_GenMcpRustClientCode(t *testing.T)       {}
+func Test_GenMcpJavaClientCode(t *testing.T)       {}
+func Test_GenMcpHaskellClientCode(t *testing.T)    {}
+func Test_GenMcpMasmClientCode(t *testing.T)       {}
+func Test_GenMcpNodejsClientCode(t *testing.T)     {}
+func Test_GenMcpOcamlClientCode(t *testing.T)      {}
+func Test_GenMcpPowerShellClientCode(t *testing.T) {}
+func Test_GenMcpRubyClientCode(t *testing.T)       {}
+func Test_GenMcpVb6ClientCode(t *testing.T)        {}
 
 type ApiMeta struct {
 	Name       string
