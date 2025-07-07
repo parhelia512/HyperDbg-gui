@@ -33,7 +33,7 @@ func Test_GenMcpGoClientCode(t *testing.T) {
 		"UINT32":        "uint32",
 		"UINT64":        "uint64",
 		"const CHAR *":  "string",
-		"const WCHAR *": "string", //todo utf16 ?
+		"const WCHAR *": "string", //todo utf16 ? 绑定其他枚举个结构体，调整很多返回值和形参位置移动
 		"CHAR *":        "string",
 		"VOID":          "void",
 	}
