@@ -41,7 +41,7 @@ func Test_GenMcpGoClientCode(t *testing.T) {
 		"VOID":          "void",
 	}
 	g := stream.NewGeneratedFile()
-	g.P("type debuggers struct {}")
+	g.P("type debugger struct {}")
 	for _, api := range apis {
 		api.Name = strings.TrimPrefix(api.Name, "HyperDbg")
 		params := ""
@@ -54,7 +54,7 @@ func Test_GenMcpGoClientCode(t *testing.T) {
 			returnType = ""
 			returnSyntax = ""
 		}
-		g.P("func (debuggers) ", api.Name, "("+params, ") ", returnType, " {")
+		g.P("func (debugger) ", api.Name, "("+params, ") ", returnType, " {")
 		g.P("\t"+
 			returnSyntax+
 			" request[",
