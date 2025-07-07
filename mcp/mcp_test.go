@@ -33,8 +33,11 @@ func Test_Bind_Go(t *testing.T) {
 	for _, api := range apis {
 		api.Name = strings.TrimPrefix(api.Name, "HyperDbg")
 		params := ""
-		for _, param := range api.Params {
-			params += param.Name + " " + goType[param.Type] + ", "
+		for i, param := range api.Params {
+			params += param.Name + " " + goType[param.Type]
+			if i < len(api.Params)-1 {
+				params += ", "
+			}
 		}
 		returnType := goType[api.ReturnType]
 		returnSyntax := "return"
@@ -43,17 +46,40 @@ func Test_Bind_Go(t *testing.T) {
 			returnSyntax = ""
 		}
 		g.P("func (debugger) ", api.Name, "("+params, ") ", returnType, " {")
-		g.P("\t"+
-			returnSyntax+
-			" request[",
-			goType[api.ReturnType],
-			"](",
-			strconv.Quote(api.Name),
-			", map[string]string{",
-			"\"addr\""+
-				": fmt.Sprintf(\"0x%x\", "+
-				"address"+
-				")})")
+
+		var callParams string
+		for i, param := range api.Params {
+			callParams += strconv.Quote(param.Name) + ":"
+			switch param.Type {
+			case "BOOLEAN":
+				callParams += "str(int(" + param.Name + "))"
+			case "INT":
+				callParams += param.Name
+			case "UINT32":
+				callParams += param.Name
+			case "UINT64":
+				callParams += param.Name
+			case "const CHAR *":
+				callParams += param.Name
+			case "const WCHAR *":
+				callParams += param.Name
+			case "CHAR *":
+				callParams += param.Name
+			case "VOID":
+				callParams += "None"
+			default:
+				t.Error("unknown param type:", param.Type)
+			}
+			if i < len(api.Params)-1 {
+				callParams += ","
+			}
+			callParams += "\n"
+		}
+		paramsMap := "map[string]string{" + callParams + "}"
+		if api.Params == nil {
+			paramsMap = "nil"
+		}
+		g.P("\t", returnSyntax, " request[", goType[api.ReturnType], "](", strconv.Quote(api.Name), ",", paramsMap, ")")
 		g.P("}")
 	}
 	g.AddImport("encoding/hex")
