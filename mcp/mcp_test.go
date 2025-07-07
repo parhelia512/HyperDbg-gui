@@ -20,11 +20,14 @@ func Test_Bind_Go(t *testing.T) {
 	stream.MarshalJsonToFile(apis, "mcp_api_meta.json")
 	goType := map[string]string{
 		"BOOLEAN":                             "bool",
+		"BOOLEAN *":                           "bool", //todo see cpp server how to handle pointer
 		"INT":                                 "int",
 		"UINT32":                              "uint32",
 		"UINT32 *":                            "uint32", //todo see cpp server how to handle pointer
 		"UINT64":                              "uint64",
+		"UINT64 *":                            "uint64", //todo see cpp server how to handle pointer
 		"const CHAR *":                        "string",
+		"const char *":                        "string",
 		"const WCHAR *":                       "string", //todo utf16 ? 绑定其他枚举个结构体，调整很多返回值和形参位置移动
 		"CHAR *":                              "string",
 		"CHAR **":                             "[]string",
@@ -35,6 +38,16 @@ func Test_Bind_Go(t *testing.T) {
 		"DEBUGGER_READ_MEMORY_ADDRESS_MODE *": "DEBUGGER_READ_MEMORY_ADDRESS_MODE",
 		"GUEST_REGS *":                        "GUEST_REGS",
 		"GUEST_EXTRA_REGISTERS *":             "GUEST_EXTRA_REGISTERS",
+		"INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS *": "INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS",
+		"IO_APIC_ENTRY_PACKETS *":                      "IO_APIC_ENTRY_PACKETS",
+		"DEBUGGER_READ_MEMORY_TYPE":                    "DEBUGGER_READ_MEMORY_TYPE",
+		"PVOID":                                        "any",
+		"REGS_ENUM":                                    "REGS_ENUM",
+		"DEBUGGER_EDIT_MEMORY_TYPE":                    "DEBUGGER_EDIT_MEMORY_TYPE",
+		"DEBUGGER_READ_READING_TYPE":                   "DEBUGGER_READ_READING_TYPE",
+		"DEBUGGER_SHOW_MEMORY_STYLE":                   "DEBUGGER_SHOW_MEMORY_STYLE",
+		"PLAPIC_PAGE":                                  "PLAPIC_PAGE",
+		//    mcp_test.go:87: unknown param type: register_id
 	}
 	g := stream.NewGeneratedFile()
 	g.P("type debugger struct {}")
@@ -67,23 +80,82 @@ func Test_Bind_Go(t *testing.T) {
 				callParams += "strconv.FormatUint(uint64(" + param.Name + "), 10)"
 			case "UINT64":
 				callParams += "strconv.FormatUint(" + param.Name + ", 10)"
-			case "const CHAR *":
-				callParams += param.Name
+			//case "const CHAR *":
+			//	callParams += param.Name
 			case "CHAR **":
 				callParams += "strings.Join(tokens_list, " +
 					"\" \"" + //todo test cpp server how to handle char **")
 					")"
 			case "const WCHAR *":
 				callParams += param.Name
-			case "CHAR *":
+			case "CHAR *", "const CHAR *", "const char *":
 				callParams += param.Name
 			case "BYTE *":
 				callParams += "hex.EncodeToString(" + param.Name + ")"
 			case "VOID":
 				callParams += "None"
+			case "PDEBUGGER_DT_COMMAND_OPTIONS":
+				callParams += "nil"
+			case "DEBUGGER_READ_MEMORY_ADDRESS_MODE *":
+				callParams += "nil"
+			case "GUEST_REGS *":
+				callParams += "nil"
+			case "GUEST_EXTRA_REGISTERS *":
+				callParams += "nil"
+			case "INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS *":
+				callParams += "nil"
+			case "IO_APIC_ENTRY_PACKETS *":
+				callParams += "nil"
+			case "DEBUGGER_READ_MEMORY_TYPE":
+				callParams += "nil"
+			case "PVOID":
+				callParams += "nil"
+			case "REGS_ENUM":
+				callParams += "nil"
+			case "DEBUGGER_EDIT_MEMORY_TYPE":
+				callParams += "nil"
+			case "DEBUGGER_READ_READING_TYPE":
+				callParams += "nil"
+			case "DEBUGGER_SHOW_MEMORY_STYLE":
+				callParams += "nil"
+			case "PLAPIC_PAGE":
+				callParams += "nil"
+			case "register_id": //todo see cpp server how to handle register_id
+				callParams += "nil"
+			case "UINT64 *":
+				callParams += "nil"
+			case "PDEBUGGER_DT_COMMAND_OPTIONS *":
+				callParams += "nil"
+			case "DEBUGGER_READ_MEMORY_ADDRESS_MODE":
+				callParams += "nil"
+			case "GUEST_REGS":
+				callParams += "nil"
+			case "GUEST_EXTRA_REGISTERS":
+				callParams += "nil"
+			case "INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS":
+				callParams += "nil"
+			case "IO_APIC_ENTRY_PACKETS":
+				callParams += "nil"
+			case "DEBUGGER_READ_MEMORY_TYPE *":
+				callParams += "nil"
+			case "REGS_ENUM *":
+				callParams += "nil"
+			case "DEBUGGER_EDIT_MEMORY_TYPE *":
+				callParams += "nil"
+			case "DEBUGGER_READ_READING_TYPE *":
+				callParams += "nil"
+			case "DEBUGGER_SHOW_MEMORY_STYLE *":
+				callParams += "nil"
+			case "PLAPIC_PAGE *":
+				callParams += "nil"
+			case "register_id *":
+				callParams += "nil"
+			case "BOOLEAN *":
+				callParams += "nil"
+
 			default:
 				callParams += strconv.Quote("todo panic --> unknown param type:" + param.Type)
-				t.Error("unknown param type:", param.Type)
+				t.Error("unknown param type:", param.Type, " api:", api.Name)
 			}
 			if api.Name == "Interpreter" { //for debug
 				//println()
@@ -831,15 +903,15 @@ var apis = []ApiMeta{
 		Params: []NameType{
 			{
 				Name: "script",
-				Type: "const CHAR * ",
+				Type: "const CHAR *",
 			},
 			{
 				Name: "instance_filepath_to_read",
-				Type: "const CHAR * ",
+				Type: "const CHAR *",
 			},
 			{
 				Name: "hardware_script_file_path_to_save",
-				Type: "const CHAR * ",
+				Type: "const CHAR *",
 			},
 			{
 				Name: "initial_bram_buffer_size",

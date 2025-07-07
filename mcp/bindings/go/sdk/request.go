@@ -197,4 +197,6 @@ type (
 	GUEST_REGS                        struct{}
 	GUEST_EXTRA_REGISTERS             struct{}
 	DEBUGGER_READ_MEMORY_ADDRESS_MODE byte
+	DEBUGGER_READ_MEMORY_TYPE         byte
+	DEBUGGER_READ_READING_TYPE        byte
 )

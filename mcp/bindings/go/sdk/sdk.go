@@ -105,60 +105,60 @@ func (debugger) SetCustomDriverPath(driver_file_path string, driver_name string)
 func (debugger) UseDefaultDriverPath() {
 	request[void]("UseDefaultDriverPath", nil)
 }
-func (debugger) ReadMemory(target_address uint64, memory_type, reading_Type, pid uint32, size uint32, get_address_mode bool, address_mode DEBUGGER_READ_MEMORY_ADDRESS_MODE, target_buffer_to_store []byte, return_length uint32) bool {
+func (debugger) ReadMemory(target_address uint64, memory_type DEBUGGER_READ_MEMORY_TYPE, reading_Type DEBUGGER_READ_READING_TYPE, pid uint32, size uint32, get_address_mode bool, address_mode DEBUGGER_READ_MEMORY_ADDRESS_MODE, target_buffer_to_store []byte, return_length uint32) bool {
 	return request[bool]("ReadMemory", map[string]string{
 		"target_address":         strconv.FormatUint(target_address, 10),
-		"memory_type":            "todo panic --> unknown param type:DEBUGGER_READ_MEMORY_TYPE",
-		"reading_Type":           "todo panic --> unknown param type:DEBUGGER_READ_READING_TYPE",
+		"memory_type":            nil,
+		"reading_Type":           nil,
 		"pid":                    strconv.FormatUint(uint64(pid), 10),
 		"size":                   strconv.FormatUint(uint64(size), 10),
 		"get_address_mode":       strconv.FormatBool(get_address_mode),
-		"address_mode":           "todo panic --> unknown param type:DEBUGGER_READ_MEMORY_ADDRESS_MODE *",
+		"address_mode":           nil,
 		"target_buffer_to_store": hex.EncodeToString(target_buffer_to_store),
 		"return_length":          strconv.FormatUint(uint64(return_length), 10),
 	})
 }
-func (debugger) ShowMemoryOrDisassemble(style, address uint64, memory_type, reading_type, pid uint32, size uint32, dt_details PDEBUGGER_DT_COMMAND_OPTIONS) {
+func (debugger) ShowMemoryOrDisassemble(style DEBUGGER_SHOW_MEMORY_STYLE, address uint64, memory_type DEBUGGER_READ_MEMORY_TYPE, reading_type DEBUGGER_READ_READING_TYPE, pid uint32, size uint32, dt_details PDEBUGGER_DT_COMMAND_OPTIONS) {
 	request[void]("ShowMemoryOrDisassemble", map[string]string{
-		"style":        "todo panic --> unknown param type:DEBUGGER_SHOW_MEMORY_STYLE",
+		"style":        nil,
 		"address":      strconv.FormatUint(address, 10),
-		"memory_type":  "todo panic --> unknown param type:DEBUGGER_READ_MEMORY_TYPE",
-		"reading_type": "todo panic --> unknown param type:DEBUGGER_READ_READING_TYPE",
+		"memory_type":  nil,
+		"reading_type": nil,
 		"pid":          strconv.FormatUint(uint64(pid), 10),
 		"size":         strconv.FormatUint(uint64(size), 10),
-		"dt_details":   "todo panic --> unknown param type:PDEBUGGER_DT_COMMAND_OPTIONS",
+		"dt_details":   nil,
 	})
 }
 func (debugger) ReadAllRegisters(guest_registers GUEST_REGS, extra_registers GUEST_EXTRA_REGISTERS) bool {
 	return request[bool]("ReadAllRegisters", map[string]string{
-		"guest_registers": "todo panic --> unknown param type:GUEST_REGS *",
-		"extra_registers": "todo panic --> unknown param type:GUEST_EXTRA_REGISTERS *",
+		"guest_registers": nil,
+		"extra_registers": nil,
 	})
 }
-func (debugger) ReadTargetRegister(REGS_ENUM, target_register) bool {
+func (debugger) ReadTargetRegister(REGS_ENUM, target_register uint64) bool {
 	return request[bool]("ReadTargetRegister", map[string]string{
-		"REGS_ENUM":       "todo panic --> unknown param type:register_id",
-		"target_register": "todo panic --> unknown param type:UINT64 *",
+		"REGS_ENUM":       nil,
+		"target_register": nil,
 	})
 }
-func (debugger) WriteTargetRegister(register_id, value uint64) bool {
+func (debugger) WriteTargetRegister(register_id REGS_ENUM, value uint64) bool {
 	return request[bool]("WriteTargetRegister", map[string]string{
-		"register_id": "todo panic --> unknown param type:REGS_ENUM",
+		"register_id": nil,
 		"value":       strconv.FormatUint(value, 10),
 	})
 }
 func (debugger) RegisterShowAll() bool {
 	return request[bool]("RegisterShowAll", nil)
 }
-func (debugger) RegisterShowTargetRegister(register_id) bool {
-	return request[bool]("RegisterShowTargetRegister", map[string]string{"register_id": "todo panic --> unknown param type:REGS_ENUM"})
+func (debugger) RegisterShowTargetRegister(register_id REGS_ENUM) bool {
+	return request[bool]("RegisterShowTargetRegister", map[string]string{"register_id": nil})
 }
-func (debugger) WriteMemory(destination_address, memory_type, process_id uint32, source_address, number_of_bytes uint32) bool {
+func (debugger) WriteMemory(destination_address any, memory_type DEBUGGER_EDIT_MEMORY_TYPE, process_id uint32, source_address any, number_of_bytes uint32) bool {
 	return request[bool]("WriteMemory", map[string]string{
-		"destination_address": "todo panic --> unknown param type:PVOID",
-		"memory_type":         "todo panic --> unknown param type:DEBUGGER_EDIT_MEMORY_TYPE",
+		"destination_address": nil,
+		"memory_type":         nil,
 		"process_id":          strconv.FormatUint(uint64(process_id), 10),
-		"source_address":      "todo panic --> unknown param type:PVOID",
+		"source_address":      nil,
 		"number_of_bytes":     strconv.FormatUint(uint64(number_of_bytes), 10),
 	})
 }
@@ -203,11 +203,11 @@ func (debugger) AssembleGetLength(assembly_code string, start_address uint64, le
 		"length":        strconv.FormatUint(uint64(length), 10),
 	})
 }
-func (debugger) Assemble(assembly_code string, start_address uint64, buffer_to_store_assembled_data, buffer_size uint32) bool {
+func (debugger) Assemble(assembly_code string, start_address uint64, buffer_to_store_assembled_data any, buffer_size uint32) bool {
 	return request[bool]("Assemble", map[string]string{
 		"assembly_code":                  assembly_code,
 		"start_address":                  strconv.FormatUint(start_address, 10),
-		"buffer_to_store_assembled_data": "todo panic --> unknown param type:PVOID",
+		"buffer_to_store_assembled_data": nil,
 		"buffer_size":                    strconv.FormatUint(uint64(buffer_size), 10),
 	})
 }
@@ -234,28 +234,28 @@ func (debugger) SteppingInstrumentationStepInForTracking() bool {
 func (debugger) SteppingStepOverForGu(last_instruction bool) bool {
 	return request[bool]("SteppingStepOverForGu", map[string]string{"last_instruction": strconv.FormatBool(last_instruction)})
 }
-func (debugger) GetLocalApic(local_apic, is_using_x2apic) bool {
+func (debugger) GetLocalApic(local_apic PLAPIC_PAGE, is_using_x2apic bool) bool {
 	return request[bool]("GetLocalApic", map[string]string{
-		"local_apic":      "todo panic --> unknown param type:PLAPIC_PAGE",
-		"is_using_x2apic": "todo panic --> unknown param type:BOOLEAN *",
+		"local_apic":      nil,
+		"is_using_x2apic": nil,
 	})
 }
-func (debugger) GetIoApic(io_apic) bool {
-	return request[bool]("GetIoApic", map[string]string{"io_apic": "todo panic --> unknown param type:IO_APIC_ENTRY_PACKETS *"})
+func (debugger) GetIoApic(io_apic IO_APIC_ENTRY_PACKETS) bool {
+	return request[bool]("GetIoApic", map[string]string{"io_apic": nil})
 }
-func (debugger) GetIdtEntry(idt_packet) bool {
-	return request[bool]("GetIdtEntry", map[string]string{"idt_packet": "todo panic --> unknown param type:INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS *"})
+func (debugger) GetIdtEntry(idt_packet INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS) bool {
+	return request[bool]("GetIdtEntry", map[string]string{"idt_packet": nil})
 }
-func (debugger) HwdbgScriptRunScript(script, instance_filepath_to_read, hardware_script_file_path_to_save, initial_bram_buffer_size uint32) bool {
+func (debugger) HwdbgScriptRunScript(script string, instance_filepath_to_read string, hardware_script_file_path_to_save string, initial_bram_buffer_size uint32) bool {
 	return request[bool]("HwdbgScriptRunScript", map[string]string{
-		"script":                            "todo panic --> unknown param type:const CHAR * ",
-		"instance_filepath_to_read":         "todo panic --> unknown param type:const CHAR * ",
-		"hardware_script_file_path_to_save": "todo panic --> unknown param type:const CHAR * ",
+		"script":                            script,
+		"instance_filepath_to_read":         instance_filepath_to_read,
+		"hardware_script_file_path_to_save": hardware_script_file_path_to_save,
 		"initial_bram_buffer_size":          strconv.FormatUint(uint64(initial_bram_buffer_size), 10),
 	})
 }
-func (debugger) ScriptEngineWrapperTestParserForHwdbg(Expr) {
-	request[void]("ScriptEngineWrapperTestParserForHwdbg", map[string]string{"Expr": "todo panic --> unknown param type:const char *"})
+func (debugger) ScriptEngineWrapperTestParserForHwdbg(Expr string) {
+	request[void]("ScriptEngineWrapperTestParserForHwdbg", map[string]string{"Expr": Expr})
 }
 func (debugger) EnableTransparentMode(ProcessId uint32, ProcessName string, IsProcessId bool) bool {
 	return request[bool]("EnableTransparentMode", map[string]string{

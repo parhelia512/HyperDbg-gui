@@ -578,15 +578,15 @@
   "Params": [
    {
     "Name": "script",
-    "Type": "const CHAR * "
+    "Type": "const CHAR *"
    },
    {
     "Name": "instance_filepath_to_read",
-    "Type": "const CHAR * "
+    "Type": "const CHAR *"
    },
    {
     "Name": "hardware_script_file_path_to_save",
-    "Type": "const CHAR * "
+    "Type": "const CHAR *"
    },
    {
     "Name": "initial_bram_buffer_size",
