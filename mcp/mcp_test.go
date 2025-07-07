@@ -26,6 +26,7 @@ func Test_Bind_Go(t *testing.T) {
 		"const CHAR *":  "string",
 		"const WCHAR *": "string", //todo utf16 ? 绑定其他枚举个结构体，调整很多返回值和形参位置移动
 		"CHAR *":        "string",
+		"CHAR **":       "[]string",
 		"VOID":          "void",
 	}
 	g := stream.NewGeneratedFile()
@@ -61,6 +62,10 @@ func Test_Bind_Go(t *testing.T) {
 				callParams += "strconv.FormatUint(" + param.Name + ", 10)"
 			case "const CHAR *":
 				callParams += param.Name
+			case "CHAR **":
+				callParams += "strings.Join(tokens_list, " +
+					"\" \"" + //todo test cpp server how to handle char **")
+					")"
 			case "const WCHAR *":
 				callParams += param.Name
 			case "CHAR *":
@@ -68,6 +73,7 @@ func Test_Bind_Go(t *testing.T) {
 			case "VOID":
 				callParams += "None"
 			default:
+				callParams += strconv.Quote("todo panic --> unknown param type:" + param.Type)
 				t.Error("unknown param type:", param.Type)
 			}
 			if api.Name == "Interpreter" { //for debug
@@ -90,6 +96,7 @@ func Test_Bind_Go(t *testing.T) {
 		g.P("\t", returnSyntax, " request[", goType[api.ReturnType], "](", strconv.Quote(api.Name), ",", paramsMap, ")")
 		g.P("}")
 	}
+	g.AddImport("strings")
 	g.AddImport("encoding/hex")
 	g.AddImport("encoding/json")
 	g.AddImport("fmt")
