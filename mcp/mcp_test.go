@@ -22,6 +22,7 @@ func Test_Bind_Go(t *testing.T) {
 		"BOOLEAN":       "bool",
 		"INT":           "int",
 		"UINT32":        "uint32",
+		"UINT32 *":      "uint32", //todo see cpp server how to handle pointer
 		"UINT64":        "uint64",
 		"const CHAR *":  "string",
 		"const WCHAR *": "string", //todo utf16 ? 绑定其他枚举个结构体，调整很多返回值和形参位置移动
@@ -50,13 +51,13 @@ func Test_Bind_Go(t *testing.T) {
 
 		var callParams string
 		for i, param := range api.Params {
-			callParams += strconv.Quote(param.Name) + ":"
+			callParams += "\t\t" + strconv.Quote(param.Name) + ":"
 			switch param.Type {
 			case "BOOLEAN":
 				callParams += "strconv.FormatBool(" + param.Name + ")"
 			case "INT":
 				callParams += "strconv.Itoa(" + param.Name + ")"
-			case "UINT32":
+			case "UINT32", "UINT32 *": //todo see cpp server how to handle pointer
 				callParams += "strconv.FormatUint(uint64(" + param.Name + "), 10)"
 			case "UINT64":
 				callParams += "strconv.FormatUint(" + param.Name + ", 10)"
