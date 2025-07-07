@@ -221,31 +221,31 @@
    },
    {
     "Name": "reading_Type",
-    "Type": "xxxxxxxxxx"
+    "Type": "DEBUGGER_READ_READING_TYPE"
    },
    {
     "Name": "pid",
-    "Type": "xxxxxxxxxx"
+    "Type": "UINT32"
    },
    {
     "Name": "size",
-    "Type": "xxxxxxxxxx"
+    "Type": "UINT32"
    },
    {
     "Name": "get_address_mode",
-    "Type": "xxxxxxxxxx"
+    "Type": "BOOLEAN"
    },
    {
     "Name": "address_mode",
-    "Type": "xxxxxxxxxx"
+    "Type": "DEBUGGER_READ_MEMORY_ADDRESS_MODE *"
    },
    {
     "Name": "target_buffer_to_store",
-    "Type": "xxxxxxxxxx"
+    "Type": "BYTE *"
    },
    {
     "Name": "return_length",
-    "Type": "xxxxxxxxxx"
+    "Type": "UINT32 *"
    }
   ],
   "ReturnType": "BOOLEAN"

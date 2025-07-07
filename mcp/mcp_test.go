@@ -26,6 +26,7 @@ import (
 //bindings\rust
 //bindings\vb6
 func Test_GenMcpGoClientCode(t *testing.T) {
+	stream.MarshalJsonToFile(apis, "mcp_api_meta.json")
 	goType := map[string]string{
 		"BOOLEAN":      "bool",
 		"INT":          "int",
@@ -89,10 +90,6 @@ type ApiMeta struct {
 type NameType struct {
 	Name string
 	Type string
-}
-
-func TestApiMeta(t *testing.T) {
-	stream.MarshalJsonToFile(apis, "mcp_api_meta.json")
 }
 
 var apis = []ApiMeta{
@@ -323,31 +320,31 @@ var apis = []ApiMeta{
 			},
 			{
 				Name: "reading_Type",
-				Type: "xxxxxxxxxx",
+				Type: "DEBUGGER_READ_READING_TYPE",
 			},
 			{
 				Name: "pid",
-				Type: "xxxxxxxxxx",
+				Type: "UINT32",
 			},
 			{
 				Name: "size",
-				Type: "xxxxxxxxxx",
+				Type: "UINT32",
 			},
 			{
 				Name: "get_address_mode",
-				Type: "xxxxxxxxxx",
+				Type: "BOOLEAN",
 			},
 			{
 				Name: "address_mode",
-				Type: "xxxxxxxxxx",
+				Type: "DEBUGGER_READ_MEMORY_ADDRESS_MODE *",
 			},
 			{
 				Name: "target_buffer_to_store",
-				Type: "xxxxxxxxxx",
+				Type: "BYTE *",
 			},
 			{
 				Name: "return_length",
-				Type: "xxxxxxxxxx",
+				Type: "UINT32 *",
 			},
 		},
 		ReturnType: "BOOLEAN", //todo 改变返回值类型 bytes buffer return need to be changed

@@ -78,7 +78,7 @@ func (debuggers) SetCustomDriverPath(driver_file_path string, driver_name string
 func (debuggers) UseDefaultDriverPath()  {
 	 request[void]("UseDefaultDriverPath", map[string]string{"addr": fmt.Sprintf("0x%x", address)})
 }
-func (debuggers) ReadMemory(target_address uint64, memory_type , reading_Type , pid , size , get_address_mode , address_mode , target_buffer_to_store , return_length , ) bool {
+func (debuggers) ReadMemory(target_address uint64, memory_type , reading_Type , pid uint32, size uint32, get_address_mode bool, address_mode , target_buffer_to_store , return_length , ) bool {
 	return request[bool]("ReadMemory", map[string]string{"addr": fmt.Sprintf("0x%x", address)})
 }
 func (debuggers) ShowMemoryOrDisassemble(style , address uint64, memory_type , reading_type , pid uint32, size uint32, dt_details , )  {
