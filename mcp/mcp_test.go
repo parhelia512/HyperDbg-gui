@@ -73,7 +73,9 @@ func Test_Bind_Go(t *testing.T) {
 			if i < len(api.Params)-1 {
 				callParams += ","
 			}
-			callParams += "\n"
+			if len(callParams) > 1 { //todo bug
+				callParams += "\n"
+			}
 		}
 		paramsMap := "map[string]string{" + callParams + "}"
 		if api.Params == nil {

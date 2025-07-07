@@ -1,9 +1,9 @@
 package sdk
 import (
-"fmt"
-"strconv"
 "encoding/hex"
 "encoding/json"
+"fmt"
+"strconv"
 )
 type debugger struct {}
 func (debugger) VmxSupportDetection() bool {
