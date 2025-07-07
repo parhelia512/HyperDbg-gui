@@ -1,6 +1,7 @@
 package mcp
 
 import (
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -26,6 +27,8 @@ import (
 //bindings\rust
 //bindings\vb6
 func Test_GenMcpGoClientCode(t *testing.T) {
+	os.RemoveAll("bindings")
+	os.RemoveAll("tmp")
 	stream.MarshalJsonToFile(apis, "mcp_api_meta.json")
 	goType := map[string]string{
 		"BOOLEAN":       "bool",
@@ -73,7 +76,8 @@ func Test_GenMcpGoClientCode(t *testing.T) {
 	b := stream.NewBuffer("request.go").ReplaceAll("package mcp", "package sdk")
 	stream.WriteGoFile("bindings/go/sdk/request.go", b.String())
 	stream.WriteGoFile("tmp/bindings/go/sdk/request.go", b.String())
-	stream.WriteGoFile(filepath.Join("bindings/go/sdk/mcp.go"), g.String())
+	stream.WriteGoFile(filepath.Join("bindings/go/sdk/sdk.go"), g.String())
+	Test_GenMcpPythonClientCode(t)
 }
 
 func Test_GenMcpPythonClientCode(t *testing.T) {
@@ -148,7 +152,7 @@ def safe_post(endpoint: str, data: dict | str):
 		g.P("")
 	}
 	g.P("if __name__ == \"__main__\":\n    mcp.run()")
-	stream.WriteTruncate("bindings/python/mcp.py", g.String())
+	stream.WriteTruncate("bindings/python/sdk.py", g.String())
 }
 
 func Test_GenMcpCppServerCode(t *testing.T)        {}
