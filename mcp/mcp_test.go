@@ -70,10 +70,13 @@ func Test_Bind_Go(t *testing.T) {
 			default:
 				t.Error("unknown param type:", param.Type)
 			}
+			if api.Name == "Interpreter" { //for debug
+				//println()
+			}
 			if i < len(api.Params)-1 {
 				callParams += ","
 			}
-			if len(callParams) > 1 { //todo bug
+			if len(api.Params) > 1 {
 				callParams += "\n"
 			}
 		}

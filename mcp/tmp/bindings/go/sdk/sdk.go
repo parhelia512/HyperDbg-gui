@@ -10,8 +10,7 @@ func (debugger) VmxSupportDetection() bool {
 	return request[bool]("VmxSupportDetection",nil)
 }
 func (debugger) CpuReadVendorString(vendor_string string)  {
-	 request[void]("CpuReadVendorString",map[string]string{"vendor_string":vendor_string
-})
+	 request[void]("CpuReadVendorString",map[string]string{"vendor_string":vendor_string})
 }
 func (debugger) LoadVmmModule() int {
 	return request[int]("LoadVmmModule",nil)
@@ -29,8 +28,7 @@ func (debugger) StopVmmDriver() int {
 	return request[int]("StopVmmDriver",nil)
 }
 func (debugger) Interpreter(command string) int {
-	return request[int]("Interpreter",map[string]string{"command":command
-})
+	return request[int]("Interpreter",map[string]string{"command":command})
 }
 func (debugger) TestCommandParser(command string, number_of_tokens uint32, tokens_list , failed_token_num , failed_token_position ) bool {
 	return request[bool]("TestCommandParser",map[string]string{"command":command,
@@ -41,8 +39,7 @@ func (debugger) TestCommandParser(command string, number_of_tokens uint32, token
 })
 }
 func (debugger) TestCommandParserShowTokens(command string)  {
-	 request[void]("TestCommandParserShowTokens",map[string]string{"command":command
-})
+	 request[void]("TestCommandParserShowTokens",map[string]string{"command":command})
 }
 func (debugger) ShowSignature()  {
 	 request[void]("ShowSignature",nil)
@@ -144,8 +141,7 @@ func (debugger) RegisterShowAll() bool {
 	return request[bool]("RegisterShowAll",nil)
 }
 func (debugger) RegisterShowTargetRegister(register_id ) bool {
-	return request[bool]("RegisterShowTargetRegister",map[string]string{"register_id":
-})
+	return request[bool]("RegisterShowTargetRegister",map[string]string{"register_id":})
 }
 func (debugger) WriteMemory(destination_address , memory_type , process_id uint32, source_address , number_of_bytes uint32) bool {
 	return request[bool]("WriteMemory",map[string]string{"destination_address":,
@@ -178,8 +174,7 @@ func (debugger) DebugCurrentDeviceUsingComPort(port_name string, baudrate ) bool
 })
 }
 func (debugger) UdAttachToProcess(path string) bool {
-	return request[bool]("UdAttachToProcess",map[string]string{"path":path
-})
+	return request[bool]("UdAttachToProcess",map[string]string{"path":path})
 }
 func (debugger) UdAttachToProcess(path string, arguments string) bool {
 	return request[bool]("UdAttachToProcess",map[string]string{"path":path,
@@ -219,8 +214,7 @@ func (debugger) SteppingInstrumentationStepInForTracking() bool {
 	return request[bool]("SteppingInstrumentationStepInForTracking",nil)
 }
 func (debugger) SteppingStepOverForGu(last_instruction bool) bool {
-	return request[bool]("SteppingStepOverForGu",map[string]string{"last_instruction":str(int(last_instruction))
-})
+	return request[bool]("SteppingStepOverForGu",map[string]string{"last_instruction":str(int(last_instruction))})
 }
 func (debugger) GetLocalApic(local_apic , is_using_x2apic ) bool {
 	return request[bool]("GetLocalApic",map[string]string{"local_apic":,
@@ -228,12 +222,10 @@ func (debugger) GetLocalApic(local_apic , is_using_x2apic ) bool {
 })
 }
 func (debugger) GetIoApic(io_apic ) bool {
-	return request[bool]("GetIoApic",map[string]string{"io_apic":
-})
+	return request[bool]("GetIoApic",map[string]string{"io_apic":})
 }
 func (debugger) GetIdtEntry(idt_packet ) bool {
-	return request[bool]("GetIdtEntry",map[string]string{"idt_packet":
-})
+	return request[bool]("GetIdtEntry",map[string]string{"idt_packet":})
 }
 func (debugger) HwdbgScriptRunScript(script , instance_filepath_to_read , hardware_script_file_path_to_save , initial_bram_buffer_size uint32) bool {
 	return request[bool]("HwdbgScriptRunScript",map[string]string{"script":,
@@ -243,8 +235,7 @@ func (debugger) HwdbgScriptRunScript(script , instance_filepath_to_read , hardwa
 })
 }
 func (debugger) ScriptEngineWrapperTestParserForHwdbg(Expr )  {
-	 request[void]("ScriptEngineWrapperTestParserForHwdbg",map[string]string{"Expr":
-})
+	 request[void]("ScriptEngineWrapperTestParserForHwdbg",map[string]string{"Expr":})
 }
 func (debugger) EnableTransparentMode(ProcessId uint32, ProcessName string, IsProcessId bool) bool {
 	return request[bool]("EnableTransparentMode",map[string]string{"ProcessId":ProcessId,
