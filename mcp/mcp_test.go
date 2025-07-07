@@ -52,7 +52,7 @@ func Test_Bind_Go(t *testing.T) {
 			callParams += strconv.Quote(param.Name) + ":"
 			switch param.Type {
 			case "BOOLEAN":
-				callParams += "str(int(" + param.Name + "))"
+				callParams += "strconv.FormatBool(" + param.Name + ")"
 			case "INT":
 				callParams += param.Name
 			case "UINT32":
@@ -73,10 +73,13 @@ func Test_Bind_Go(t *testing.T) {
 			if api.Name == "Interpreter" { //for debug
 				//println()
 			}
-			if i < len(api.Params)-1 {
+			if i < len(api.Params) {
 				callParams += ","
 			}
 			if len(api.Params) > 1 {
+				if i == 0 {
+					callParams = "\n" + callParams
+				}
 				callParams += "\n"
 			}
 		}
