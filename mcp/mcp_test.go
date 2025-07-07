@@ -95,63 +95,63 @@ func Test_Bind_Go(t *testing.T) {
 			case "VOID":
 				callParams += "None"
 			case "PDEBUGGER_DT_COMMAND_OPTIONS":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "DEBUGGER_READ_MEMORY_ADDRESS_MODE *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "GUEST_REGS *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "GUEST_EXTRA_REGISTERS *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "IO_APIC_ENTRY_PACKETS *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "DEBUGGER_READ_MEMORY_TYPE":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "PVOID":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "REGS_ENUM":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "DEBUGGER_EDIT_MEMORY_TYPE":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "DEBUGGER_READ_READING_TYPE":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "DEBUGGER_SHOW_MEMORY_STYLE":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "PLAPIC_PAGE":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "register_id": //todo see cpp server how to handle register_id
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "UINT64 *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "PDEBUGGER_DT_COMMAND_OPTIONS *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "DEBUGGER_READ_MEMORY_ADDRESS_MODE":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "GUEST_REGS":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "GUEST_EXTRA_REGISTERS":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "INTERRUPT_DESCRIPTOR_TABLE_ENTRIES_PACKETS":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "IO_APIC_ENTRY_PACKETS":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "DEBUGGER_READ_MEMORY_TYPE *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "REGS_ENUM *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "DEBUGGER_EDIT_MEMORY_TYPE *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "DEBUGGER_READ_READING_TYPE *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "DEBUGGER_SHOW_MEMORY_STYLE *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "PLAPIC_PAGE *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "register_id *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 			case "BOOLEAN *":
-				callParams += "nil"
+				callParams += strconv.Quote("panic todo hanlde me")
 
 			default:
 				callParams += strconv.Quote("todo panic --> unknown param type:" + param.Type)
