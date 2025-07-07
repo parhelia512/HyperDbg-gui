@@ -54,11 +54,11 @@ func Test_Bind_Go(t *testing.T) {
 			case "BOOLEAN":
 				callParams += "strconv.FormatBool(" + param.Name + ")"
 			case "INT":
-				callParams += param.Name
+				callParams += "strconv.Itoa(" + param.Name + ")"
 			case "UINT32":
-				callParams += param.Name
+				callParams += "strconv.FormatUint(uint64(" + param.Name + "), 10)"
 			case "UINT64":
-				callParams += param.Name
+				callParams += "strconv.FormatUint(" + param.Name + ", 10)"
 			case "const CHAR *":
 				callParams += param.Name
 			case "const WCHAR *":

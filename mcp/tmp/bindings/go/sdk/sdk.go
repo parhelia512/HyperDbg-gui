@@ -33,7 +33,7 @@ func (debugger) Interpreter(command string) int {
 func (debugger) TestCommandParser(command string, number_of_tokens uint32, tokens_list , failed_token_num , failed_token_position ) bool {
 	return request[bool]("TestCommandParser",map[string]string{
 "command":command,
-"number_of_tokens":number_of_tokens,
+"number_of_tokens":strconv.FormatUint(uint64(number_of_tokens), 10),
 "tokens_list":,
 "failed_token_num":,
 "failed_token_position":,
@@ -56,7 +56,7 @@ func (debugger) UnsetTextMessageCallback()  {
 }
 func (debugger) ScriptReadFileAndExecuteCommandline(argc int, argv string) int {
 	return request[int]("ScriptReadFileAndExecuteCommandline",map[string]string{
-"argc":argc,
+"argc":strconv.Itoa(argc),
 "argv":argv,
 })
 }
@@ -86,10 +86,10 @@ func (debugger) Pause()  {
 }
 func (debugger) SetBreakPoint(address uint64, pid uint32, tid uint32, core_numer uint32)  {
 	 request[void]("SetBreakPoint",map[string]string{
-"address":address,
-"pid":pid,
-"tid":tid,
-"core_numer":core_numer,
+"address":strconv.FormatUint(address, 10),
+"pid":strconv.FormatUint(uint64(pid), 10),
+"tid":strconv.FormatUint(uint64(tid), 10),
+"core_numer":strconv.FormatUint(uint64(core_numer), 10),
 })
 }
 func (debugger) SetCustomDriverPath(driver_file_path string, driver_name string) bool {
@@ -103,11 +103,11 @@ func (debugger) UseDefaultDriverPath()  {
 }
 func (debugger) ReadMemory(target_address uint64, memory_type , reading_Type , pid uint32, size uint32, get_address_mode bool, address_mode , target_buffer_to_store , return_length ) bool {
 	return request[bool]("ReadMemory",map[string]string{
-"target_address":target_address,
+"target_address":strconv.FormatUint(target_address, 10),
 "memory_type":,
 "reading_Type":,
-"pid":pid,
-"size":size,
+"pid":strconv.FormatUint(uint64(pid), 10),
+"size":strconv.FormatUint(uint64(size), 10),
 "get_address_mode":strconv.FormatBool(get_address_mode),
 "address_mode":,
 "target_buffer_to_store":,
@@ -117,11 +117,11 @@ func (debugger) ReadMemory(target_address uint64, memory_type , reading_Type , p
 func (debugger) ShowMemoryOrDisassemble(style , address uint64, memory_type , reading_type , pid uint32, size uint32, dt_details )  {
 	 request[void]("ShowMemoryOrDisassemble",map[string]string{
 "style":,
-"address":address,
+"address":strconv.FormatUint(address, 10),
 "memory_type":,
 "reading_type":,
-"pid":pid,
-"size":size,
+"pid":strconv.FormatUint(uint64(pid), 10),
+"size":strconv.FormatUint(uint64(size), 10),
 "dt_details":,
 })
 }
@@ -146,7 +146,7 @@ func (debugger) ReadTargetRegister(xxxxxxxxxxxxxx , xxxxxxxxxx ) bool {
 func (debugger) WriteTargetRegister(register_id , value uint64) bool {
 	return request[bool]("WriteTargetRegister",map[string]string{
 "register_id":,
-"value":value,
+"value":strconv.FormatUint(value, 10),
 })
 }
 func (debugger) RegisterShowAll() bool {
@@ -159,9 +159,9 @@ func (debugger) WriteMemory(destination_address , memory_type , process_id uint3
 	return request[bool]("WriteMemory",map[string]string{
 "destination_address":,
 "memory_type":,
-"process_id":process_id,
+"process_id":strconv.FormatUint(uint64(process_id), 10),
 "source_address":,
-"number_of_bytes":number_of_bytes,
+"number_of_bytes":strconv.FormatUint(uint64(number_of_bytes), 10),
 })
 }
 func (debugger) DebuggerGetKernelBase() uint64 {
@@ -201,23 +201,23 @@ func (debugger) UdAttachToProcess(path string, arguments string) bool {
 func (debugger) AssembleGetLength(assembly_code string, start_address uint64, length ) bool {
 	return request[bool]("AssembleGetLength",map[string]string{
 "assembly_code":assembly_code,
-"start_address":start_address,
+"start_address":strconv.FormatUint(start_address, 10),
 "length":,
 })
 }
 func (debugger) Assemble(assembly_code string, start_address uint64, buffer_to_store_assembled_data , buffer_size uint32) bool {
 	return request[bool]("Assemble",map[string]string{
 "assembly_code":assembly_code,
-"start_address":start_address,
+"start_address":strconv.FormatUint(start_address, 10),
 "buffer_to_store_assembled_data":,
-"buffer_size":buffer_size,
+"buffer_size":strconv.FormatUint(uint64(buffer_size), 10),
 })
 }
 func (debugger) SetupPathForFileName(filename string, file_location string, buffer_len uint32, check_file_existence bool) bool {
 	return request[bool]("SetupPathForFileName",map[string]string{
 "filename":filename,
 "file_location":file_location,
-"buffer_len":buffer_len,
+"buffer_len":strconv.FormatUint(uint64(buffer_len), 10),
 "check_file_existence":strconv.FormatBool(check_file_existence),
 })
 }
@@ -253,7 +253,7 @@ func (debugger) HwdbgScriptRunScript(script , instance_filepath_to_read , hardwa
 "script":,
 "instance_filepath_to_read":,
 "hardware_script_file_path_to_save":,
-"initial_bram_buffer_size":initial_bram_buffer_size,
+"initial_bram_buffer_size":strconv.FormatUint(uint64(initial_bram_buffer_size), 10),
 })
 }
 func (debugger) ScriptEngineWrapperTestParserForHwdbg(Expr )  {
@@ -261,7 +261,7 @@ func (debugger) ScriptEngineWrapperTestParserForHwdbg(Expr )  {
 }
 func (debugger) EnableTransparentMode(ProcessId uint32, ProcessName string, IsProcessId bool) bool {
 	return request[bool]("EnableTransparentMode",map[string]string{
-"ProcessId":ProcessId,
+"ProcessId":strconv.FormatUint(uint64(ProcessId), 10),
 "ProcessName":ProcessName,
 "IsProcessId":strconv.FormatBool(IsProcessId),
 })
