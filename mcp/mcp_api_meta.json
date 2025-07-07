@@ -289,39 +289,25 @@
   "Params": [
    {
     "Name": "guest_registers",
-    "Type": "xxxxxxxxxxxxxxx"
+    "Type": "GUEST_REGS *"
    },
    {
     "Name": "extra_registers",
-    "Type": "xxxxxxxxxx"
+    "Type": "GUEST_EXTRA_REGISTERS *"
    }
   ],
   "ReturnType": "BOOLEAN"
  },
  {
-  "Name": "xxxxxxxxxxxxxxxxxxx",
-  "Params": [
-   {
-    "Name": "xxxxxxxxxxxxxx",
-    "Type": "xxxxxxxxxxxxxxx"
-   },
-   {
-    "Name": "xxxxxxxxxx",
-    "Type": "xxxxxxxxxx"
-   }
-  ],
-  "ReturnType": "xxxxxxxxxxxxxxxxx"
- },
- {
   "Name": "HyperDbgReadTargetRegister",
   "Params": [
    {
-    "Name": "xxxxxxxxxxxxxx",
-    "Type": "xxxxxxxxxxxxxxx"
+    "Name": "REGS_ENUM",
+    "Type": "register_id"
    },
    {
-    "Name": "xxxxxxxxxx",
-    "Type": "xxxxxxxxxx"
+    "Name": "target_register",
+    "Type": "UINT64 *"
    }
   ],
   "ReturnType": "BOOLEAN"
@@ -438,7 +424,7 @@
   "ReturnType": "BOOLEAN"
  },
  {
-  "Name": "UdAttachToProcess",
+  "Name": "StartProcess",
   "Params": [
    {
     "Name": "path",
@@ -448,7 +434,7 @@
   "ReturnType": "BOOLEAN"
  },
  {
-  "Name": "UdAttachToProcess",
+  "Name": "StartProcessWithArgs",
   "Params": [
    {
     "Name": "path",

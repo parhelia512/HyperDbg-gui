@@ -139,9 +139,6 @@ def HyperDbgShowMemoryOrDisassemble()
 def HyperDbgReadAllRegisters()
 
 @mcp.tool()
-def xxxxxxxxxxxxxxxxxxx()
-
-@mcp.tool()
 def HyperDbgReadTargetRegister()
 
 @mcp.tool()
@@ -172,10 +169,10 @@ def HyperDbgDebugCloseRemoteDebugger()
 def HyperDbgDebugCurrentDeviceUsingComPort()
 
 @mcp.tool()
-def UdAttachToProcess()
+def StartProcess()
 
 @mcp.tool()
-def UdAttachToProcess()
+def StartProcessWithArgs()
 
 @mcp.tool()
 def HyperDbgAssembleGetLength()

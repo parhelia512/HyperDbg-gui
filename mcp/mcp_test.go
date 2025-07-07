@@ -19,16 +19,22 @@ func Test_Bind_Go(t *testing.T) {
 	os.RemoveAll("tmp")
 	stream.MarshalJsonToFile(apis, "mcp_api_meta.json")
 	goType := map[string]string{
-		"BOOLEAN":       "bool",
-		"INT":           "int",
-		"UINT32":        "uint32",
-		"UINT32 *":      "uint32", //todo see cpp server how to handle pointer
-		"UINT64":        "uint64",
-		"const CHAR *":  "string",
-		"const WCHAR *": "string", //todo utf16 ? 绑定其他枚举个结构体，调整很多返回值和形参位置移动
-		"CHAR *":        "string",
-		"CHAR **":       "[]string",
-		"VOID":          "void",
+		"BOOLEAN":                             "bool",
+		"INT":                                 "int",
+		"UINT32":                              "uint32",
+		"UINT32 *":                            "uint32", //todo see cpp server how to handle pointer
+		"UINT64":                              "uint64",
+		"const CHAR *":                        "string",
+		"const WCHAR *":                       "string", //todo utf16 ? 绑定其他枚举个结构体，调整很多返回值和形参位置移动
+		"CHAR *":                              "string",
+		"CHAR **":                             "[]string",
+		"VOID":                                "void",
+		"BYTE *":                              "[]byte", //todo test cpp server how to handle byte *
+		"DWORD":                               "uint32", //?
+		"PDEBUGGER_DT_COMMAND_OPTIONS":        "PDEBUGGER_DT_COMMAND_OPTIONS",
+		"DEBUGGER_READ_MEMORY_ADDRESS_MODE *": "DEBUGGER_READ_MEMORY_ADDRESS_MODE",
+		"GUEST_REGS *":                        "GUEST_REGS",
+		"GUEST_EXTRA_REGISTERS *":             "GUEST_EXTRA_REGISTERS",
 	}
 	g := stream.NewGeneratedFile()
 	g.P("type debugger struct {}")
@@ -57,7 +63,7 @@ func Test_Bind_Go(t *testing.T) {
 				callParams += "strconv.FormatBool(" + param.Name + ")"
 			case "INT":
 				callParams += "strconv.Itoa(" + param.Name + ")"
-			case "UINT32", "UINT32 *": //todo see cpp server how to handle pointer
+			case "UINT32", "DWORD", "UINT32 *": //todo see cpp server how to handle pointer
 				callParams += "strconv.FormatUint(uint64(" + param.Name + "), 10)"
 			case "UINT64":
 				callParams += "strconv.FormatUint(" + param.Name + ", 10)"
@@ -71,6 +77,8 @@ func Test_Bind_Go(t *testing.T) {
 				callParams += param.Name
 			case "CHAR *":
 				callParams += param.Name
+			case "BYTE *":
+				callParams += "hex.EncodeToString(" + param.Name + ")"
 			case "VOID":
 				callParams += "None"
 			default:
@@ -105,7 +113,7 @@ func Test_Bind_Go(t *testing.T) {
 	g.InsertPackageWithImports("sdk")
 	b := stream.NewBuffer("request.go").ReplaceAll("package mcp", "package sdk")
 	stream.WriteGoFile("bindings/go/sdk/request.go", b.String())
-	stream.WriteGoFile("tmp/bindings/go/sdk/request.go", b.String())
+	//stream.WriteGoFile("tmp/bindings/go/sdk/request.go", b.String())
 	stream.WriteGoFile(filepath.Join("bindings/go/sdk/sdk.go"), g.String())
 
 	//generate other language bindings
@@ -520,39 +528,39 @@ var apis = []ApiMeta{
 		Params: []NameType{
 			{
 				Name: "guest_registers",
-				Type: "xxxxxxxxxxxxxxx",
+				Type: "GUEST_REGS *",
 			},
 			{
 				Name: "extra_registers",
-				Type: "xxxxxxxxxx",
+				Type: "GUEST_EXTRA_REGISTERS *",
 			},
 		},
 		ReturnType: "BOOLEAN", //todo 返回结构体
 	},
-	{
-		Name: "xxxxxxxxxxxxxxxxxxx",
-		Params: []NameType{
-			{
-				Name: "xxxxxxxxxxxxxx",
-				Type: "xxxxxxxxxxxxxxx",
-			},
-			{
-				Name: "xxxxxxxxxx",
-				Type: "xxxxxxxxxx",
-			},
-		},
-		ReturnType: "xxxxxxxxxxxxxxxxx",
-	},
+	//{
+	//	Name: "xxxxxxxxxxxxxxxxxxx",
+	//	Params: []NameType{
+	//		{
+	//			Name: "xxxxxxxxxxxxxx",
+	//			Type: "xxxxxxxxxxxxxxx",
+	//		},
+	//		{
+	//			Name: "xxxxxxxxxx",
+	//			Type: "xxxxxxxxxx",
+	//		},
+	//	},
+	//	ReturnType: "xxxxxxxxxxxxxxxxx",
+	//},
 	{
 		Name: "HyperDbgReadTargetRegister",
 		Params: []NameType{
 			{
-				Name: "xxxxxxxxxxxxxx",
-				Type: "xxxxxxxxxxxxxxx",
+				Name: "REGS_ENUM",
+				Type: "register_id",
 			},
 			{
-				Name: "xxxxxxxxxx",
-				Type: "xxxxxxxxxx",
+				Name: "target_register",
+				Type: "UINT64 *",
 			},
 		},
 		ReturnType: "BOOLEAN", //todo 返回结构体
@@ -669,7 +677,7 @@ var apis = []ApiMeta{
 		ReturnType: "BOOLEAN",
 	},
 	{
-		Name: "UdAttachToProcess",
+		Name: "StartProcess",
 		Params: []NameType{
 			{
 				Name: "path",
@@ -679,7 +687,7 @@ var apis = []ApiMeta{
 		ReturnType: "BOOLEAN",
 	},
 	{
-		Name: "UdAttachToProcess",
+		Name: "StartProcessWithArgs",
 		Params: []NameType{
 			{
 				Name: "path",
