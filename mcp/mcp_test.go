@@ -85,9 +85,9 @@ import json
 from mcp.server.fastmcp import FastMCP
 
 DEFAULT_HyperDBG_SERVER = "http://127.0.0.1:8888/"
-x64dbg_server_url = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_HyperDBG_SERVER
+hyperdbg_server_url = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_HyperDBG_SERVER
 
-mcp = FastMCP("x64dbg-mcp")
+mcp = FastMCP("hyperdbg-mcp")
 
 def safe_get(endpoint: str, params: dict = None):
     """
@@ -97,7 +97,7 @@ def safe_get(endpoint: str, params: dict = None):
     if params is None:
         params = {}
 
-    url = f"{x64dbg_server_url}{endpoint}"
+    url = f"{hyperdbg_server_url}{endpoint}"
 
     try:
         response = requests.get(url, params=params, timeout=15)
@@ -119,7 +119,7 @@ def safe_post(endpoint: str, data: dict | str):
     Returns parsed JSON if possible, otherwise text content
     """
     try:
-        url = f"{x64dbg_server_url}{endpoint}"
+        url = f"{hyperdbg_server_url}{endpoint}"
         if isinstance(data, dict):
             response = requests.post(url, data=data, timeout=5)
         else:
