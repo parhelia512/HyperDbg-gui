@@ -76,11 +76,85 @@ func Test_GenMcpGoClientCode(t *testing.T) {
 	stream.WriteGoFile(filepath.Join("bindings/go/sdk/mcp.go"), g.String())
 }
 
-func GenMcpCppServerCode()        {}
-func GenMcpPythonClientCode()     {}
-func GenMcpCsharpClientCode()     {}
-func GenMcpJavascriptClientCode() {}
-func GenMcpRustClientCode()       {}
+func Test_GenMcpPythonClientCode(t *testing.T) {
+	start := `
+import sys
+import requests
+import json
+
+from mcp.server.fastmcp import FastMCP
+
+DEFAULT_HyperDBG_SERVER = "http://127.0.0.1:8888/"
+x64dbg_server_url = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_HyperDBG_SERVER
+
+mcp = FastMCP("x64dbg-mcp")
+
+def safe_get(endpoint: str, params: dict = None):
+    """
+    Perform a GET request with optional query parameters.
+    Returns parsed JSON if possible, otherwise text content
+    """
+    if params is None:
+        params = {}
+
+    url = f"{x64dbg_server_url}{endpoint}"
+
+    try:
+        response = requests.get(url, params=params, timeout=15)
+        response.encoding = 'utf-8'
+        if response.ok:
+            # Try to parse as JSON first
+            try:
+                return response.json()
+            except ValueError:
+                return response.text.strip()
+        else:
+            return f"Error {response.status_code}: {response.text.strip()}"
+    except Exception as e:
+        return f"Request failed: {str(e)}"
+
+def safe_post(endpoint: str, data: dict | str):
+    """
+    Perform a POST request with data.
+    Returns parsed JSON if possible, otherwise text content
+    """
+    try:
+        url = f"{x64dbg_server_url}{endpoint}"
+        if isinstance(data, dict):
+            response = requests.post(url, data=data, timeout=5)
+        else:
+            response = requests.post(url, data=data.encode("utf-8"), timeout=5)
+        
+        response.encoding = 'utf-8'
+        
+        if response.ok:
+            # Try to parse as JSON first
+            try:
+                return response.json()
+            except ValueError:
+                return response.text.strip()
+        else:
+            return f"Error {response.status_code}: {response.text.strip()}"
+    except Exception as e:
+        return f"Request failed: {str(e)}"
+`
+	g := stream.NewGeneratedFile()
+	g.P(start)
+	for _, api := range apis {
+		g.P("@mcp.tool()")
+		//ai model 提示词
+		g.P("def ", api.Name, "()")
+		//g.P("    return safe_post('mcp/api/"+api.Name+"', {'"+api.Params[0].Name+"': "+api.Params[0].Name+"})")
+		g.P("")
+	}
+	g.P("if __name__ == \"__main__\":\n    mcp.run()")
+	stream.WriteTruncate("bindings/python/mcp.py", g.String())
+}
+
+func Test_GenMcpCppServerCode(t *testing.T)        {}
+func Test_GenMcpCsharpClientCode(t *testing.T)     {}
+func Test_GenMcpJavascriptClientCode(t *testing.T) {}
+func Test_GenMcpRustClientCode(t *testing.T)       {}
 
 type ApiMeta struct {
 	Name       string
