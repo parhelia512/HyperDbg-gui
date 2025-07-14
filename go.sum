@@ -37,6 +37,10 @@ github.com/ddkwork/ux v0.0.0-20250714094946-ba3d1c4a4c07 h1:UOPEpAmn8qLoOukqemdf
 github.com/ddkwork/ux v0.0.0-20250714094946-ba3d1c4a4c07/go.mod h1:gLzoHZ50zfCCQXmW0XhraP04/B9t131I17l9zMzhIpI=
 github.com/ddkwork/ux v0.0.0-20250714110024-2fcd5722ca00 h1:oYp9v0UiEaV4hjP3V4lWtQVqErt9aSNtJPbey2pKWBw=
 github.com/ddkwork/ux v0.0.0-20250714110024-2fcd5722ca00/go.mod h1:gLzoHZ50zfCCQXmW0XhraP04/B9t131I17l9zMzhIpI=
+github.com/ddkwork/ux v0.0.0-20250714111222-81cd92df6416 h1:TlkN8lMRQr2AoUc/QnMwmTzKQX1MckBZAmqOzwaeIMk=
+github.com/ddkwork/ux v0.0.0-20250714111222-81cd92df6416/go.mod h1:gLzoHZ50zfCCQXmW0XhraP04/B9t131I17l9zMzhIpI=
+github.com/ddkwork/ux v0.0.0-20250714112300-fb1245ae2001 h1:fpoahUwxPI9AL4XUjA8Fp+0o2QlqCukM/JjUJ4HHRB0=
+github.com/ddkwork/ux v0.0.0-20250714112300-fb1245ae2001/go.mod h1:gLzoHZ50zfCCQXmW0XhraP04/B9t131I17l9zMzhIpI=
 github.com/dlclark/regexp2 v1.11.5 h1:Q/sSnsKerHeCkc/jSTNq1oCm7KiVgUMZRDUoRu0JQZQ=
 github.com/dlclark/regexp2 v1.11.5/go.mod h1:DHkYz0B9wPfa6wondMfaivmHpzrQ3v9q8cnmRbL6yW8=
 github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=

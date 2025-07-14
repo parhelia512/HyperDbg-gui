@@ -7,7 +7,7 @@ require (
 	github.com/dave/dst v0.27.3
 	github.com/ddkwork/ddk v0.0.0-20250616133849-aeec284b7037
 	github.com/ddkwork/golibrary v0.1.5-0.20250714094806-dc6ad63544b1
-	github.com/ddkwork/ux v0.0.0-20250714110024-2fcd5722ca00
+	github.com/ddkwork/ux v0.0.0-20250714112300-fb1245ae2001
 	github.com/ebitengine/purego v0.9.0-alpha.9
 	github.com/ollama/ollama v0.9.6
 	github.com/saferwall/pe v1.5.7
