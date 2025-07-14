@@ -7,9 +7,9 @@ require (
 	github.com/dave/dst v0.27.3
 	github.com/ddkwork/ddk v0.0.0-20250616133849-aeec284b7037
 	github.com/ddkwork/golibrary v0.1.5-0.20250714094806-dc6ad63544b1
-	github.com/ddkwork/ux v0.0.0-20250714094946-ba3d1c4a4c07
-	github.com/ebitengine/purego v0.9.0-alpha.8
-	github.com/ollama/ollama v0.9.5
+	github.com/ddkwork/ux v0.0.0-20250714110024-2fcd5722ca00
+	github.com/ebitengine/purego v0.9.0-alpha.9
+	github.com/ollama/ollama v0.9.6
 	github.com/saferwall/pe v1.5.7
 	github.com/valyala/fastjson v1.6.4
 	github.com/winlabs/gowin32 v0.0.0-20240930213947-f504d7e14639
@@ -18,14 +18,14 @@ require (
 	modernc.org/cc/v4 v4.26.2
 )
 
-replace gioui.org => github.com/ddkwork/gio v0.0.0-20250706015609-ee4bbc8b09bb
+replace gioui.org => github.com/ddkwork/gio v0.0.0-20250714084109-c95ea9a48a4d
 
 require (
 	gioui.org/shader v1.0.8 // indirect
 	gioui.org/x v0.8.2-0.20250115181849-c005f2ad1592 // indirect
 	git.wow.st/gmp/jni v0.0.0-20210610011705-34026c7e22d0 // indirect
 	github.com/alecthomas/chroma/v2 v2.19.0 // indirect
-	github.com/aquasecurity/table v1.10.0 // indirect
+	github.com/aquasecurity/table v1.11.0 // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
 	github.com/edsrzf/mmap-go v1.2.0 // indirect
 	github.com/go-text/typesetting v0.3.0 // indirect
@@ -40,8 +40,8 @@ require (
 	github.com/secDre4mer/pkcs7 v0.0.0-20240322103146-665324a4461d // indirect
 	github.com/spf13/afero v1.14.0 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
-	github.com/spyre-project/spyre v1.2.5 // indirect
-	golang.org/x/arch v0.18.1-0.20250630202737-203f3d62f49b // indirect
+	github.com/spyre-project/spyre v1.2.7 // indirect
+	golang.org/x/arch v0.19.0 // indirect
 	golang.org/x/crypto v0.40.0 // indirect
 	golang.org/x/exp v0.0.0-20250711185948-6ae5c78190dc // indirect
 	golang.org/x/exp/shiny v0.0.0-20250711185948-6ae5c78190dc // indirect

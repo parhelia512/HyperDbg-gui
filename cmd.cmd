@@ -22,3 +22,7 @@ git rev-parse HEAD
 git rev-parse HEAD
 go get -x github.com/ddkwork/ux@ba3d1c4a4c0713a44f22fdb2b3646f07289aa330
 go get -x github.com/ddkwork/golibrary@dc6ad63544b1fd97b67d48637d102f2c6a387c6e
+git rev-parse HEAD
+git rev-parse HEAD
+go get -x github.com/ddkwork/golibrary@dc6ad63544b1fd97b67d48637d102f2c6a387c6e
+go get -x github.com/ddkwork/ux@2fcd5722ca00a65879082341ec0190dd835653bc
