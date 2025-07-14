@@ -18,3 +18,7 @@ go get -x github.com/ddkwork/ux@0dad9f4abbc1cd5e1017eaadcfd33efe86e2a6cb
 go mod tidy
 go run golang.org/x/tools/gopls/internal/analysis/modernize/cmd/modernize@latest -diff ./...
 go run golang.org/x/tools/gopls/internal/analysis/modernize/cmd/modernize@latest -fix ./...
+git rev-parse HEAD
+git rev-parse HEAD
+go get -x github.com/ddkwork/ux@ba3d1c4a4c0713a44f22fdb2b3646f07289aa330
+go get -x github.com/ddkwork/golibrary@dc6ad63544b1fd97b67d48637d102f2c6a387c6e
